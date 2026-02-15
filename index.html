@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Website Pribadi - Muhammad Nurokhim</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #0f172a, #1e293b);
+    color: white;
+}
+
+header {
+    text-align: center;
+    padding: 40px 20px;
+}
+
+header h1 {
+    font-size: 32px;
+    margin-bottom: 10px;
+}
+
+header p {
+    color: #94a3b8;
+}
+
+.container {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+.card {
+    background: #1e293b;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    margin-bottom: 20px;
+}
+
+.card h2 {
+    margin-bottom: 15px;
+    color: #38bdf8;
+}
+
+.info-item {
+    margin-bottom: 10px;
+}
+
+.label {
+    font-weight: bold;
+    color: #94a3b8;
+}
+
+footer {
+    text-align: center;
+    padding: 20px;
+    margin-top: 40px;
+    background: #0f172a;
+    color: #94a3b8;
+}
+
+.status {
+    display: inline-block;
+    padding: 6px 12px;
+    background: #38bdf8;
+    color: black;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 14px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>Muhammad Nurokhim</h1>
+    <p>Website Pribadi</p>
+</header>
+
+<div class="container">
+
+    <div class="card">
+        <h2>Informasi Pribadi</h2>
+        <div class="info-item"><span class="label">Nama:</span> Muhammad Nurokhim</div>
+        <div class="info-item"><span class="label">Tanggal Lahir:</span> 11 Juli 2007</div>
+        <div class="info-item"><span class="label">Umur:</span> <span id="umur"></span> Tahun</div>
+        <div class="info-item"><span class="label">Status:</span> <span class="status">Lajang</span></div>
+    </div>
+
+    <div class="card">
+        <h2>Riwayat Pendidikan</h2>
+        <div class="info-item"><span class="label">SD:</span> SD Negeri Sukoreno</div>
+        <div class="info-item"><span class="label">SMP:</span> SMP Negeri 1 Sentolo</div>
+        <div class="info-item"><span class="label">Sekarang:</span> SMK Negeri 2 Pengasih</div>
+        <div class="info-item"><span class="label">Kelas:</span> 12 TJKT 2</div>
+    </div>
+
+</div>
+
+<footer>
+    © 2026 Muhammad Nurokhim
+</footer>
+
+<script>
+function hitungUmur() {
+    const tanggalLahir = new Date("2007-07-11");
+    const hariIni = new Date();
+
+    let umur = hariIni.getFullYear() - tanggalLahir.getFullYear();
+    const bulan = hariIni.getMonth() - tanggalLahir.getMonth();
+
+    if (bulan < 0 || (bulan === 0 && hariIni.getDate() < tanggalLahir.getDate())) {
+        umur--;
+    }
+
+    document.getElementById("umur").textContent = umur;
+}
+
+hitungUmur();
+</script>
+
+</body>
+</html>

@@ -49,7 +49,6 @@ nav ul {
 nav ul li a {
     text-decoration: none;
     color: white;
-    font-weight: 400;
     transition: 0.3s;
 }
 
@@ -139,6 +138,44 @@ section {
     font-size: 14px;
 }
 
+/* Project Preview Special */
+.project-preview {
+    background: linear-gradient(135deg, #1e293b, #0f172a);
+    border: 1px solid #334155;
+    padding: 30px;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+    max-width: 600px;
+    margin: auto;
+}
+
+.project-preview h3 {
+    font-size: 22px;
+    margin-bottom: 10px;
+}
+
+.project-preview p {
+    color: #94a3b8;
+    margin-bottom: 20px;
+}
+
+.project-preview a {
+    display: inline-block;
+    padding: 10px 20px;
+    background: #38bdf8;
+    color: black;
+    text-decoration: none;
+    border-radius: 25px;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.project-preview a:hover {
+    box-shadow: 0 8px 20px rgba(56,189,248,0.4);
+    transform: scale(1.05);
+}
+
 /* Footer */
 footer {
     text-align: center;
@@ -162,15 +199,15 @@ footer {
     <h2>Nurokhim</h2>
     <ul>
         <li><a href="#about">Tentang</a></li>
+        <li><a href="#project">Project</a></li>
         <li><a href="#education">Pendidikan</a></li>
-        <li><a href="#contact">Kontak</a></li>
     </ul>
 </nav>
 
 <div class="hero">
     <h1>Halo, Saya <span>Muhammad Nurokhim</span></h1>
-    <p>Siswa SMK Negeri 2 Pengasih jurusan TJKT yang tertarik pada dunia teknologi, jaringan, dan pengembangan web.</p>
-    <a href="#about" class="btn">Lihat Profil</a>
+    <p>Siswa SMK Negeri 2 Pengasih jurusan TJKT yang tertarik pada teknologi, jaringan, dan pengembangan web.</p>
+    <a href="#project" class="btn">Lihat Project</a>
 </div>
 
 <section id="about">
@@ -181,14 +218,22 @@ footer {
             <p><b>Tanggal Lahir:</b> 11 Juli 2007</p>
             <p><b>Umur:</b> <span id="umur"></span> Tahun</p>
             <p><b>Status:</b> Lajang</p>
-        </div>
-
-        <div class="card">
-            <h3>Kelas</h3>
-            <p>SMK Negeri 2 Pengasih</p>
-            <p>12 TJKT 2</p>
+            <p><b>Kelas:</b> 12 TJKT 2</p>
         </div>
     </div>
+</section>
+
+<section id="project">
+    <h2 class="section-title">Project</h2>
+
+    <div class="project-preview">
+        <h3>🚀 Unknown Novel</h3>
+        <p>Website novel online yang saya kembangkan dan deploy menggunakan Cloudflare Pages.</p>
+        <a href="https://unknown-novel.pages.dev" target="_blank">
+            Kunjungi Website
+        </a>
+    </div>
+
 </section>
 
 <section id="education">
@@ -206,13 +251,6 @@ footer {
             <h3>SMK</h3>
             <p>SMK Negeri 2 Pengasih</p>
         </div>
-    </div>
-</section>
-
-<section id="contact">
-    <h2 class="section-title">Kontak</h2>
-    <div class="card" style="max-width:500px;margin:auto;text-align:center;">
-        <p>Terbuka untuk kolaborasi dan pembelajaran teknologi 🚀</p>
     </div>
 </section>
 

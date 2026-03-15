@@ -8,7 +8,6 @@
   <style>
     :root{
       --bg:#0b1220;
-      --bg-soft:#111827;
       --card:#182235;
       --card-2:#1e2a44;
       --text:#e5eefc;
@@ -17,7 +16,7 @@
       --accent-2:#60a5fa;
       --border:rgba(148,163,184,0.15);
       --shadow:0 10px 30px rgba(0,0,0,0.35);
-      --maxw:1100px;
+      --maxw:1200px;
     }
 
     *{box-sizing:border-box}
@@ -31,6 +30,7 @@
         radial-gradient(circle at bottom left, rgba(96,165,250,0.10), transparent 35%),
         linear-gradient(180deg, #0b1220 0%, #0f172a 100%);
       min-height:100vh;
+      user-select:none;
     }
 
     nav{
@@ -50,7 +50,6 @@
       color:var(--muted);
       text-decoration:none;
       font-weight:700;
-      transition:.25s;
       margin-right:14px;
     }
 
@@ -84,55 +83,6 @@
       color:var(--muted);
     }
 
-    .gallery {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-      gap: 16px;
-      margin-top: 20px;
-    }
-
-    .card {
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      box-shadow: var(--shadow);
-      overflow: hidden;
-      cursor: pointer;
-      position: relative;
-      background: rgba(24,34,53,0.8);
-      transition: transform .25s ease, box-shadow .25s ease;
-    }
-
-    .card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 14px 34px rgba(0,0,0,0.45);
-    }
-
-    .card-img-top {
-      width: 100%;
-      height: 220px;
-      object-fit: cover;
-      display:block;
-      transition: transform .25s;
-    }
-
-    .card:hover .card-img-top {
-      transform: scale(1.04);
-    }
-
-    .caption {
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: linear-gradient(to top, rgba(2,6,23,0.92), rgba(2,6,23,0.35));
-      color: #fff;
-      padding: 10px 14px;
-      font-size: 14px;
-      text-align: left;
-      z-index: 2;
-      font-weight:600;
-    }
-
     .status-box{
       background:rgba(24,34,53,0.8);
       border:1px solid var(--border);
@@ -140,70 +90,195 @@
       padding:18px;
       border-radius:16px;
       box-shadow:var(--shadow);
+      margin-bottom:20px;
     }
 
-    /* Lightbox */
-    .lightbox{
+    .gallery{
+      display:grid;
+      grid-template-columns:repeat(auto-fill, minmax(250px, 1fr));
+      gap:18px;
+    }
+
+    .card{
+      border:1px solid var(--border);
+      border-radius:18px;
+      box-shadow:var(--shadow);
+      overflow:hidden;
+      cursor:pointer;
+      position:relative;
+      background:rgba(24,34,53,0.85);
+      transition:transform .25s ease, box-shadow .25s ease;
+    }
+
+    .card:hover{
+      transform:translateY(-5px);
+    }
+
+    .card img{
+      width:100%;
+      height:220px;
+      object-fit:cover;
+      display:block;
+      user-select:none;
+      -webkit-user-drag:none;
+    }
+
+    .card-body{
+      padding:14px;
+    }
+
+    .card-title{
+      font-weight:800;
+      color:#fff;
+      margin-bottom:8px;
+      font-size:16px;
+    }
+
+    .card-desc{
+      color:var(--muted);
+      font-size:14px;
+      margin-bottom:10px;
+      min-height:40px;
+    }
+
+    .card-date{
+      color:#93c5fd;
+      font-size:13px;
+    }
+
+    /* FULLSCREEN MODAL */
+    .viewer{
       position:fixed;
       inset:0;
+      background:rgba(2,6,23,0.95);
       display:none;
+      z-index:999;
+      padding:20px;
       align-items:center;
       justify-content:center;
-      background:rgba(2,6,23,0.82);
-      z-index:90;
-      padding:20px;
+      flex-direction:column;
     }
 
-    .lightbox.visible{
+    .viewer.active{
       display:flex;
     }
 
-    .lb-inner{
-      max-width:92vw;
-      max-height:92vh;
-      position:relative;
-    }
-
-    .lb-img{
-      display:block;
-      max-width:100%;
-      max-height:80vh;
-      border-radius:14px;
-      background:#111;
-      border:1px solid rgba(255,255,255,0.08);
-      box-shadow:0 14px 40px rgba(0,0,0,0.55);
-    }
-
-    .lb-caption{
-      color:#fff;
-      margin-top:10px;
-      text-align:center;
-      font-size:15px;
-      font-weight:600;
-    }
-
-    .lb-close{
+    .viewer-top{
       position:absolute;
-      top:10px;
-      right:10px;
-      background:rgba(15,23,42,0.8);
-      color:#fff;
-      border:1px solid rgba(255,255,255,0.1);
-      padding:8px 14px;
-      border-radius:10px;
-      cursor:pointer;
-      font-size:20px;
+      top:14px;
+      right:14px;
+      display:flex;
+      gap:10px;
+      z-index:2;
     }
 
-    @media (max-width:700px){
-      nav{
-        flex-direction:column;
-        align-items:flex-start;
+    .viewer-btn{
+      border:none;
+      background:rgba(15,23,42,0.9);
+      color:#fff;
+      padding:10px 14px;
+      border-radius:12px;
+      cursor:pointer;
+      font-weight:800;
+      border:1px solid rgba(255,255,255,0.08);
+    }
+
+    .viewer-btn:hover{
+      background:rgba(30,41,59,0.95);
+    }
+
+    .viewer-main{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      width:100%;
+      max-width:1400px;
+      gap:16px;
+    }
+
+    .nav-btn{
+      border:none;
+      background:rgba(15,23,42,0.85);
+      color:#fff;
+      width:54px;
+      height:54px;
+      border-radius:50%;
+      cursor:pointer;
+      font-size:22px;
+      font-weight:900;
+      flex-shrink:0;
+      border:1px solid rgba(255,255,255,0.08);
+    }
+
+    .nav-btn:hover{
+      background:rgba(30,41,59,0.95);
+    }
+
+    .viewer-content{
+      max-width:100%;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+    }
+
+    .viewer-image{
+      max-width:85vw;
+      max-height:70vh;
+      border-radius:16px;
+      display:block;
+      object-fit:contain;
+      box-shadow:0 20px 50px rgba(0,0,0,0.6);
+      user-select:none;
+      -webkit-user-drag:none;
+      pointer-events:none;
+    }
+
+    .viewer-info{
+      margin-top:16px;
+      width:min(85vw, 900px);
+      background:rgba(24,34,53,0.8);
+      border:1px solid var(--border);
+      border-radius:18px;
+      padding:18px;
+      box-shadow:var(--shadow);
+    }
+
+    .viewer-title{
+      font-size:22px;
+      font-weight:900;
+      color:#fff;
+      margin-bottom:8px;
+    }
+
+    .viewer-desc{
+      color:var(--muted);
+      margin-bottom:10px;
+      line-height:1.6;
+    }
+
+    .viewer-date{
+      color:#93c5fd;
+      font-size:14px;
+      font-weight:700;
+    }
+
+    @media (max-width:768px){
+      .viewer-main{
         gap:10px;
       }
 
-      h1{
-        font-size:26px;
+      .nav-btn{
+        width:46px;
+        height:46px;
+      }
+
+      .viewer-image{
+        max-width:75vw;
+        max-height:58vh;
+      }
+
+      .viewer-info{
+        width:92vw;
       }
     }
   </style>
@@ -219,132 +294,180 @@
   <div class="container">
     <div class="header-box">
       <h1>Galeri</h1>
-      <p class="subtext">Kumpulan gambar dari Supabase Storage dengan tampilan dark mode bertema biru.</p>
+      <p class="subtext">Galeri karya dengan tampilan fullscreen, navigasi next/previous, dan informasi lengkap gambar.</p>
     </div>
 
     <div id="status" class="status-box">Memuat galeri...</div>
     <div class="gallery" id="gallery"></div>
   </div>
 
-  <!-- LIGHTBOX -->
-  <div id="lightbox" class="lightbox" aria-modal="true">
-    <div class="lb-inner">
-      <img id="lbImage" class="lb-img" src="" alt="">
-      <button id="lbClose" class="lb-close" aria-label="Tutup">✕</button>
-      <div id="lbCaption" class="lb-caption"></div>
+  <!-- FULLSCREEN VIEWER -->
+  <div id="viewer" class="viewer" aria-modal="true">
+    <div class="viewer-top">
+      <button class="viewer-btn" id="closeViewer">✕ Exit</button>
+    </div>
+
+    <div class="viewer-main">
+      <button class="nav-btn" id="prevBtn">❮</button>
+
+      <div class="viewer-content">
+        <img id="viewerImage" class="viewer-image" src="" alt="" draggable="false">
+        <div class="viewer-info">
+          <div id="viewerTitle" class="viewer-title"></div>
+          <div id="viewerDesc" class="viewer-desc"></div>
+          <div id="viewerDate" class="viewer-date"></div>
+        </div>
+      </div>
+
+      <button class="nav-btn" id="nextBtn">❯</button>
     </div>
   </div>
 
-  <!-- Supabase JS -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
-    // =========================
-    // GANTI DENGAN KEY ASLI KAMU
-    // =========================
     const SUPABASE_URL = "https://wcwbyqrxocjgykwonmoo.supabase.co";
-    const SUPABASE_KEY = "PASTE_ANON_KEY_ASLI_KAMU_DI_SINI";
+    const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indjd2J5cXJ4b2NqZ3lrd29ubW9vIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzEwOTIwNjAsImV4cCI6MjA4NjY2ODA2MH0.Pthqfu4N393tb0Mv6uuRUeHWevCU03gOHF1vwsPgWSk";
 
     const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
     const gallery = document.getElementById('gallery');
     const statusBox = document.getElementById('status');
-    const lightbox = document.getElementById('lightbox');
-    const lbImage = document.getElementById('lbImage');
-    const lbClose = document.getElementById('lbClose');
-    const lbCaption = document.getElementById('lbCaption');
+
+    const viewer = document.getElementById('viewer');
+    const viewerImage = document.getElementById('viewerImage');
+    const viewerTitle = document.getElementById('viewerTitle');
+    const viewerDesc = document.getElementById('viewerDesc');
+    const viewerDate = document.getElementById('viewerDate');
+
+    const closeViewer = document.getElementById('closeViewer');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
 
     let items = [];
     let currentIndex = 0;
 
-    async function loadGallery() {
-      statusBox.textContent = "Memuat galeri...";
-
-      const { data, error } = await client.storage.from('uploads').list('', {
-        limit: 100,
-        sortBy: { column: 'name', order: 'asc' }
+    function formatDate(dateString) {
+      const date = new Date(dateString);
+      return date.toLocaleDateString('id-ID', {
+        day: '2-digit',
+        month: 'long',
+        year: 'numeric'
       });
+    }
+
+    async function loadGallery() {
+      statusBox.textContent = 'Memuat galeri...';
+      gallery.innerHTML = '';
+
+      const { data, error } = await client
+        .from('gallery')
+        .select('*')
+        .order('created_at', { ascending: false });
 
       if (error) {
         console.error(error);
-        statusBox.innerHTML = "Gagal memuat galeri. Cek bucket <b>uploads</b>, file gambar, atau API key Supabase.";
+        statusBox.innerHTML = 'Gagal memuat galeri. Cek tabel <b>gallery</b>, policy, atau data.';
         return;
       }
 
-      items = (data || []).filter(file => {
-        return file.name && !file.name.startsWith('.');
-      });
-
-      gallery.innerHTML = "";
+      items = data || [];
 
       if (items.length === 0) {
-        statusBox.textContent = "Belum ada gambar di bucket uploads.";
+        statusBox.textContent = 'Belum ada gambar di galeri.';
         return;
       }
 
       statusBox.textContent = `Berhasil memuat ${items.length} gambar.`;
 
-      items.forEach((file, idx) => {
-        const caption = file.name
-          .replace(/\.[a-z0-9]+$/i, '')
-          .replace(/[_-]/g, ' ');
-
-        const { data } = client.storage.from('uploads').getPublicUrl(file.name);
-        const imgUrl = data.publicUrl;
-
+      items.forEach((item, idx) => {
         const card = document.createElement('div');
         card.className = 'card';
         card.tabIndex = 0;
-        card.setAttribute('aria-label', caption);
+
         card.innerHTML = `
-          <img src="${imgUrl}" alt="${caption}" class="card-img-top" loading="lazy">
-          <div class="caption">${caption}</div>
+          <img src="${item.image_url}" alt="${escapeHtml(item.title)}" oncontextmenu="return false;" draggable="false">
+          <div class="card-body">
+            <div class="card-title">${escapeHtml(item.title)}</div>
+            <div class="card-desc">${escapeHtml(item.description || 'Tanpa deskripsi')}</div>
+            <div class="card-date">Upload: ${formatDate(item.created_at)}</div>
+          </div>
         `;
 
-        card.addEventListener('click', () => openLightbox(idx));
+        card.addEventListener('click', () => openViewer(idx));
         card.addEventListener('keydown', (e) => {
-          if (e.key === 'Enter') openLightbox(idx);
+          if (e.key === 'Enter') openViewer(idx);
         });
 
         gallery.appendChild(card);
       });
     }
 
-    function openLightbox(idx){
-      currentIndex = idx;
-      const file = items[idx];
-      const caption = file.name
-        .replace(/\.[a-z0-9]+$/i, '')
-        .replace(/[_-]/g, ' ');
-
-      const { data } = client.storage.from('uploads').getPublicUrl(file.name);
-      const imgUrl = data.publicUrl;
-
-      lbImage.src = imgUrl;
-      lbImage.alt = caption;
-      lbCaption.textContent = caption;
-      lightbox.classList.add('visible');
+    function openViewer(index) {
+      currentIndex = index;
+      renderViewer();
+      viewer.classList.add('active');
       document.body.style.overflow = 'hidden';
-      lbClose.focus();
     }
 
-    function closeLightbox(){
-      lightbox.classList.remove('visible');
+    function closeViewerModal() {
+      viewer.classList.remove('active');
       document.body.style.overflow = '';
-      lbImage.src = '';
+      viewerImage.src = '';
     }
 
-    lbClose.addEventListener('click', closeLightbox);
-    lightbox.addEventListener('click', e => {
-      if(e.target === lightbox) closeLightbox();
+    function renderViewer() {
+      const item = items[currentIndex];
+      if (!item) return;
+
+      viewerImage.src = item.image_url;
+      viewerImage.alt = item.title;
+      viewerTitle.textContent = item.title;
+      viewerDesc.textContent = item.description || 'Tidak ada deskripsi.';
+      viewerDate.textContent = 'Tanggal upload: ' + formatDate(item.created_at);
+    }
+
+    function showNext() {
+      if (items.length === 0) return;
+      currentIndex = (currentIndex + 1) % items.length;
+      renderViewer();
+    }
+
+    function showPrev() {
+      if (items.length === 0) return;
+      currentIndex = (currentIndex - 1 + items.length) % items.length;
+      renderViewer();
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    closeViewer.addEventListener('click', closeViewerModal);
+    nextBtn.addEventListener('click', showNext);
+    prevBtn.addEventListener('click', showPrev);
+
+    document.addEventListener('keydown', (e) => {
+      if (!viewer.classList.contains('active')) return;
+
+      if (e.key === 'Escape') closeViewerModal();
+      if (e.key === 'ArrowRight') showNext();
+      if (e.key === 'ArrowLeft') showPrev();
     });
 
-    document.addEventListener('keydown', e => {
-      if(lightbox.classList.contains('visible')) {
-        if(e.key === "Escape") closeLightbox();
-      }
+    document.addEventListener('contextmenu', (e) => {
+      if (e.target.tagName === 'IMG') e.preventDefault();
     });
 
-    window.onload = loadGallery;
+    document.addEventListener('dragstart', (e) => {
+      if (e.target.tagName === 'IMG') e.preventDefault();
+    });
+
+    loadGallery();
   </script>
 </body>
 </html>

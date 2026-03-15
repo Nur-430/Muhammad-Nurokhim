@@ -4,64 +4,225 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Galeri — Nurokhim</title>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
   <style>
+    :root{
+      --bg:#0b1220;
+      --bg-soft:#111827;
+      --card:#182235;
+      --card-2:#1e2a44;
+      --text:#e5eefc;
+      --muted:#94a3b8;
+      --accent:#3b82f6;
+      --accent-2:#60a5fa;
+      --border:rgba(148,163,184,0.15);
+      --shadow:0 10px 30px rgba(0,0,0,0.35);
+      --maxw:1100px;
+    }
+
+    *{box-sizing:border-box}
+
+    body{
+      margin:0;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(circle at top right, rgba(59,130,246,0.18), transparent 30%),
+        radial-gradient(circle at bottom left, rgba(96,165,250,0.10), transparent 35%),
+        linear-gradient(180deg, #0b1220 0%, #0f172a 100%);
+      min-height:100vh;
+    }
+
+    nav{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:18px 22px;
+      border-bottom:1px solid var(--border);
+      background:rgba(11,18,32,0.85);
+      backdrop-filter:blur(12px);
+      position:sticky;
+      top:0;
+      z-index:50;
+    }
+
+    nav a{
+      color:var(--muted);
+      text-decoration:none;
+      font-weight:700;
+      transition:.25s;
+      margin-right:14px;
+    }
+
+    nav a:hover{
+      color:var(--accent-2);
+    }
+
+    .container{
+      max-width:var(--maxw);
+      margin:32px auto;
+      padding:0 20px;
+    }
+
+    .header-box{
+      background:rgba(24,34,53,0.8);
+      border:1px solid var(--border);
+      border-radius:22px;
+      padding:24px;
+      box-shadow:var(--shadow);
+      margin-bottom:24px;
+    }
+
+    h1{
+      margin:0 0 8px;
+      font-size:32px;
+      color:#fff;
+    }
+
+    .subtext{
+      margin:0;
+      color:var(--muted);
+    }
+
     .gallery {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-      gap: 12px;
-      margin-top: 24px;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 16px;
+      margin-top: 20px;
     }
+
     .card {
-      border: none;
-      border-radius: 8px;
-      box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
       overflow: hidden;
       cursor: pointer;
       position: relative;
+      background: rgba(24,34,53,0.8);
+      transition: transform .25s ease, box-shadow .25s ease;
     }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 14px 34px rgba(0,0,0,0.45);
+    }
+
     .card-img-top {
       width: 100%;
-      height: 180px;
+      height: 220px;
       object-fit: cover;
-      transition: transform .23s;
+      display:block;
+      transition: transform .25s;
     }
+
     .card:hover .card-img-top {
       transform: scale(1.04);
     }
+
     .caption {
       position: absolute;
-      left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.55);
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(to top, rgba(2,6,23,0.92), rgba(2,6,23,0.35));
       color: #fff;
-      padding: 8px 12px;
+      padding: 10px 14px;
       font-size: 14px;
       text-align: left;
-      border-radius: 0 0 8px 8px;
       z-index: 2;
+      font-weight:600;
     }
+
+    .status-box{
+      background:rgba(24,34,53,0.8);
+      border:1px solid var(--border);
+      color:var(--muted);
+      padding:18px;
+      border-radius:16px;
+      box-shadow:var(--shadow);
+    }
+
     /* Lightbox */
     .lightbox{
-      position:fixed; inset:0; display:none; align-items:center; justify-content:center; background:rgba(2,6,23,0.6); z-index:90;
+      position:fixed;
+      inset:0;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      background:rgba(2,6,23,0.82);
+      z-index:90;
+      padding:20px;
     }
-    .lightbox.visible{display:flex}
-    .lb-inner{max-width:90vw; max-height:90vh; position:relative}
-    .lb-img{display:block; max-width:100%; max-height:80vh; border-radius:10px; background:#111}
-    .lb-caption{color:#fff; margin-top:8px; text-align:center; font-size:15px}
+
+    .lightbox.visible{
+      display:flex;
+    }
+
+    .lb-inner{
+      max-width:92vw;
+      max-height:92vh;
+      position:relative;
+    }
+
+    .lb-img{
+      display:block;
+      max-width:100%;
+      max-height:80vh;
+      border-radius:14px;
+      background:#111;
+      border:1px solid rgba(255,255,255,0.08);
+      box-shadow:0 14px 40px rgba(0,0,0,0.55);
+    }
+
+    .lb-caption{
+      color:#fff;
+      margin-top:10px;
+      text-align:center;
+      font-size:15px;
+      font-weight:600;
+    }
+
     .lb-close{
-      position:absolute; top:10px; right:10px;
-      background:rgba(0,0,0,0.5); color:#fff; border:0; padding:8px 14px; border-radius:8px; cursor:pointer;
+      position:absolute;
+      top:10px;
+      right:10px;
+      background:rgba(15,23,42,0.8);
+      color:#fff;
+      border:1px solid rgba(255,255,255,0.1);
+      padding:8px 14px;
+      border-radius:10px;
+      cursor:pointer;
       font-size:20px;
+    }
+
+    @media (max-width:700px){
+      nav{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:10px;
+      }
+
+      h1{
+        font-size:26px;
+      }
     }
   </style>
 </head>
 <body>
-  <nav class="navbar navbar-light bg-light">
-    <a class="navbar-brand" href="index.html">Home</a>
-    <a class="navbar-brand" href="galeri.html">Galeri</a>
+  <nav>
+    <div>
+      <a href="index.html">Home</a>
+      <a href="galeri.html">Galeri</a>
+    </div>
   </nav>
+
   <div class="container">
-    <h1 class="text-center mt-4">Galeri Gambar</h1>
+    <div class="header-box">
+      <h1>Galeri</h1>
+      <p class="subtext">Kumpulan gambar dari Supabase Storage dengan tampilan dark mode bertema biru.</p>
+    </div>
+
+    <div id="status" class="status-box">Memuat galeri...</div>
     <div class="gallery" id="gallery"></div>
   </div>
 
@@ -75,74 +236,115 @@
   </div>
 
   <!-- Supabase JS -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.0.0/dist/umd/supabase.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
-  // Supabase credentials
-  const SUPABASE_URL = "https://wcwbyqrxocjgykwonmoo.supabase.co";
-  const SUPABASE_KEY = "eyJhbGci0iJIUzI1NiIsInR5cCI6IkpXV CJ9.eyJpc3Mi0iJzdXBhYmFzZSIsInJlZiI6Indjd2J5cXJ4b2NqZ31rd29 ubW9vIiwicm9sZSI6ImFub24iLCJpYXQi0jE3NzEwOTIwNjAsImV4cCI6Mj A4NjY20DA2MH0.Pthqfu4N393tb0Mv6uuRUeHWevCU03g0HF1vwsPgWSk";
-  const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    // =========================
+    // GANTI DENGAN KEY ASLI KAMU
+    // =========================
+    const SUPABASE_URL = "https://wcwbyqrxocjgykwonmoo.supabase.co";
+    const SUPABASE_KEY = "PASTE_ANON_KEY_ASLI_KAMU_DI_SINI";
 
-  const gallery = document.getElementById('gallery');
-  const lightbox = document.getElementById('lightbox');
-  const lbImage = document.getElementById('lbImage');
-  const lbClose = document.getElementById('lbClose');
-  const lbCaption = document.getElementById('lbCaption');
+    const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-  let items = [];
-  let currentIndex = 0;
+    const gallery = document.getElementById('gallery');
+    const statusBox = document.getElementById('status');
+    const lightbox = document.getElementById('lightbox');
+    const lbImage = document.getElementById('lbImage');
+    const lbClose = document.getElementById('lbClose');
+    const lbCaption = document.getElementById('lbCaption');
 
-  // Ambil daftar file dari Supabase storage (bucket: uploads)
-  async function loadGallery() {
-    const { data, error } = await supabase.storage.from('uploads').list('');
-    if(error){ gallery.innerHTML = "<div class='text-danger'>Gagal memuat galeri.</div>"; return; }
+    let items = [];
+    let currentIndex = 0;
 
-    items = data || [];
-    gallery.innerHTML = "";
-    items.forEach((file, idx) => {
-      // Keterangan dari nama file (atau bisa pakai metadata Supabase/rename sesuai kebutuhan)
-      const caption = file.name.replace(/\.[a-z0-9]+$/i, '').replace(/[_-]/g, ' ');
-      const imgUrl = `${SUPABASE_URL}/storage/v1/object/public/uploads/${file.name}`;
-      const card = document.createElement('div');
-      card.className = 'card';
-      card.tabIndex = 0;
-      card.setAttribute('aria-label', caption);
-      card.innerHTML = `
-        <img src="${imgUrl}" alt="${caption}" class="card-img-top" loading="lazy">
-        <div class="caption">${caption}</div>
-      `;
-      card.addEventListener('click', () => openLightbox(idx));
-      gallery.appendChild(card);
-    });
-  }
+    async function loadGallery() {
+      statusBox.textContent = "Memuat galeri...";
 
-  // LIGHTBOX fn
-  function openLightbox(idx){
-    currentIndex = idx;
-    const file = items[idx];
-    const caption = file.name.replace(/\.[a-z0-9]+$/i, '').replace(/[_-]/g, ' ');
-    const imgUrl = `${SUPABASE_URL}/storage/v1/object/public/uploads/${file.name}`;
-    lbImage.src = imgUrl;
-    lbImage.alt = caption;
-    lbCaption.textContent = caption;
-    lightbox.classList.add('visible');
-    document.body.style.overflow = 'hidden';
-    lbClose.focus();
-  }
-  function closeLightbox(){
-    lightbox.classList.remove('visible');
-    document.body.style.overflow = '';
-    lbImage.src = '';
-  }
-  lbClose.addEventListener('click', closeLightbox);
-  lightbox.addEventListener('click', e => { if(e.target === lightbox) closeLightbox(); });
+      const { data, error } = await client.storage.from('uploads').list('', {
+        limit: 100,
+        sortBy: { column: 'name', order: 'asc' }
+      });
 
-  // keyboard ESC
-  document.addEventListener('keydown', e => {
-    if(lightbox.classList.contains('visible')) {
-      if(e.key==="Escape") closeLightbox();
+      if (error) {
+        console.error(error);
+        statusBox.innerHTML = "Gagal memuat galeri. Cek bucket <b>uploads</b>, file gambar, atau API key Supabase.";
+        return;
+      }
+
+      items = (data || []).filter(file => {
+        return file.name && !file.name.startsWith('.');
+      });
+
+      gallery.innerHTML = "";
+
+      if (items.length === 0) {
+        statusBox.textContent = "Belum ada gambar di bucket uploads.";
+        return;
+      }
+
+      statusBox.textContent = `Berhasil memuat ${items.length} gambar.`;
+
+      items.forEach((file, idx) => {
+        const caption = file.name
+          .replace(/\.[a-z0-9]+$/i, '')
+          .replace(/[_-]/g, ' ');
+
+        const { data } = client.storage.from('uploads').getPublicUrl(file.name);
+        const imgUrl = data.publicUrl;
+
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.tabIndex = 0;
+        card.setAttribute('aria-label', caption);
+        card.innerHTML = `
+          <img src="${imgUrl}" alt="${caption}" class="card-img-top" loading="lazy">
+          <div class="caption">${caption}</div>
+        `;
+
+        card.addEventListener('click', () => openLightbox(idx));
+        card.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') openLightbox(idx);
+        });
+
+        gallery.appendChild(card);
+      });
     }
-  });
-  window.onload = loadGallery;
+
+    function openLightbox(idx){
+      currentIndex = idx;
+      const file = items[idx];
+      const caption = file.name
+        .replace(/\.[a-z0-9]+$/i, '')
+        .replace(/[_-]/g, ' ');
+
+      const { data } = client.storage.from('uploads').getPublicUrl(file.name);
+      const imgUrl = data.publicUrl;
+
+      lbImage.src = imgUrl;
+      lbImage.alt = caption;
+      lbCaption.textContent = caption;
+      lightbox.classList.add('visible');
+      document.body.style.overflow = 'hidden';
+      lbClose.focus();
+    }
+
+    function closeLightbox(){
+      lightbox.classList.remove('visible');
+      document.body.style.overflow = '';
+      lbImage.src = '';
+    }
+
+    lbClose.addEventListener('click', closeLightbox);
+    lightbox.addEventListener('click', e => {
+      if(e.target === lightbox) closeLightbox();
+    });
+
+    document.addEventListener('keydown', e => {
+      if(lightbox.classList.contains('visible')) {
+        if(e.key === "Escape") closeLightbox();
+      }
+    });
+
+    window.onload = loadGallery;
   </script>
 </body>
 </html>

@@ -6,47 +6,255 @@
   <title>Nurokhim — Portfolio</title>
   <style>
     :root{
-      --bg:#ffffff; --text:#0f1720; --muted:#6b7280;
-      --accent:#0ea5a3; --maxw:1000px;
-      --radius:12px;
+      --bg:#0b1220;
+      --bg-soft:#111827;
+      --card:#182235;
+      --card-2:#1e2a44;
+      --text:#e5eefc;
+      --muted:#94a3b8;
+      --accent:#3b82f6;
+      --accent-2:#60a5fa;
+      --border:rgba(148,163,184,0.15);
+      --shadow:0 10px 30px rgba(0,0,0,0.35);
+      --maxw:1100px;
+      --radius:18px;
     }
+
     *{box-sizing:border-box}
+
+    html{
+      scroll-behavior:smooth;
+    }
+
     body{
-      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-      margin:0; color:var(--text); background:var(--bg); line-height:1.4;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      margin:0;
+      color:var(--text);
+      background:
+        radial-gradient(circle at top right, rgba(59,130,246,0.18), transparent 30%),
+        radial-gradient(circle at bottom left, rgba(96,165,250,0.10), transparent 35%),
+        linear-gradient(180deg, #0b1220 0%, #0f172a 100%);
+      line-height:1.6;
       -webkit-font-smoothing:antialiased;
     }
+
     nav{
-      display:flex; justify-content:space-between; align-items:center;
-      padding:18px 20px; border-bottom:1px solid #e6e9ee; background:#fff;
-      position:sticky; top:0; z-index:20;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:18px 22px;
+      border-bottom:1px solid var(--border);
+      background:rgba(11,18,32,0.85);
+      backdrop-filter:blur(12px);
+      position:sticky;
+      top:0;
+      z-index:50;
     }
-    nav h2{margin:0; font-size:18px; letter-spacing:0.4px;}
-    nav ul{list-style:none; margin:0; padding:0; display:flex; gap:16px; align-items:center;}
-    nav a{color:var(--muted); text-decoration:none; font-weight:600}
-    nav a:hover{color:var(--text)}
-    .container{max-width:var(--maxw); margin:40px auto; padding:0 20px}
-    .hero{display:flex; gap:28px; align-items:center}
+
+    nav h2{
+      margin:0;
+      font-size:20px;
+      letter-spacing:0.5px;
+      color:#fff;
+    }
+
+    nav ul{
+      list-style:none;
+      margin:0;
+      padding:0;
+      display:flex;
+      gap:16px;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+
+    nav a{
+      color:var(--muted);
+      text-decoration:none;
+      font-weight:600;
+      transition:.25s;
+    }
+
+    nav a:hover{
+      color:var(--accent-2);
+    }
+
+    .container{
+      max-width:var(--maxw);
+      margin:42px auto;
+      padding:0 20px;
+    }
+
+    .hero{
+      display:grid;
+      grid-template-columns:140px 1fr;
+      gap:28px;
+      align-items:center;
+      background:rgba(24,34,53,0.75);
+      border:1px solid var(--border);
+      border-radius:24px;
+      padding:28px;
+      box-shadow:var(--shadow);
+      backdrop-filter:blur(10px);
+    }
+
     .avatar{
-      width:120px; height:120px; border-radius:999px; overflow:hidden; flex:0 0 120px;
-      box-shadow:0 8px 24px rgba(2,6,23,0.08);
+      width:140px;
+      height:140px;
+      border-radius:999px;
+      overflow:hidden;
+      border:3px solid rgba(59,130,246,0.5);
+      box-shadow:0 10px 25px rgba(59,130,246,0.25);
+      background:#0f172a;
     }
-    .avatar img{width:100%; height:100%; object-fit:cover; display:block}
-    .intro h1{margin:0 0 6px; font-size:28px}
-    .intro p{margin:0; color:var(--muted)}
-    .meta{margin-top:18px; display:flex; gap:12px; flex-wrap:wrap}
-    .chip{padding:8px 12px; background:#f8fafb;border-radius:999px;color:var(--muted);font-size:14px}
-    section{margin-top:48px}
-    h3{margin:0 0 12px}
-    .projects{display:grid; gap:14px; grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+
+    .avatar img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+    }
+
+    .intro h1{
+      margin:0 0 8px;
+      font-size:34px;
+      line-height:1.2;
+    }
+
+    .intro p{
+      margin:0;
+      color:var(--muted);
+      font-size:16px;
+    }
+
+    .meta{
+      margin-top:20px;
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+
+    .chip{
+      padding:10px 14px;
+      background:rgba(59,130,246,0.12);
+      border:1px solid rgba(59,130,246,0.2);
+      border-radius:999px;
+      color:#cfe3ff;
+      font-size:14px;
+      font-weight:600;
+    }
+
+    section{
+      margin-top:42px;
+    }
+
+    .section-title{
+      font-size:24px;
+      margin:0 0 16px;
+      color:#fff;
+    }
+
     .card{
-      padding:14px; border-radius:12px; background:#fff; box-shadow:0 6px 20px rgba(2,6,23,0.04);
-      border:1px solid #f0f3f6;
+      padding:20px;
+      border-radius:18px;
+      background:rgba(24,34,53,0.8);
+      border:1px solid var(--border);
+      box-shadow:var(--shadow);
     }
-    footer{padding:32px 0; color:var(--muted); text-align:center}
-    @media (max-width:640px){
-      .hero{flex-direction:column; align-items:flex-start}
-      .avatar{width:96px;height:96px}
+
+    .project-card{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+
+    .project-link{
+      display:inline-block;
+      width:fit-content;
+      text-decoration:none;
+      color:#fff;
+      background:linear-gradient(135deg, var(--accent), var(--accent-2));
+      padding:10px 16px;
+      border-radius:12px;
+      font-weight:700;
+      transition:transform .2s ease, box-shadow .2s ease;
+      box-shadow:0 8px 20px rgba(59,130,246,0.25);
+    }
+
+    .project-link:hover{
+      transform:translateY(-2px);
+    }
+
+    .info-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
+      gap:16px;
+    }
+
+    .info-box{
+      background:rgba(30,42,68,0.65);
+      border:1px solid var(--border);
+      border-radius:16px;
+      padding:16px;
+    }
+
+    .info-box h4{
+      margin:0 0 8px;
+      font-size:15px;
+      color:#dbeafe;
+    }
+
+    .info-box p{
+      margin:0;
+      color:var(--muted);
+    }
+
+    .edu-list{
+      display:grid;
+      gap:14px;
+    }
+
+    .edu-item{
+      background:rgba(30,42,68,0.65);
+      border:1px solid var(--border);
+      border-radius:16px;
+      padding:16px;
+    }
+
+    .edu-item strong{
+      display:block;
+      color:#fff;
+      margin-bottom:6px;
+    }
+
+    .edu-item span{
+      color:var(--muted);
+    }
+
+    footer{
+      padding:36px 0 10px;
+      color:var(--muted);
+      text-align:center;
+    }
+
+    @media (max-width:700px){
+      .hero{
+        grid-template-columns:1fr;
+      }
+
+      .avatar{
+        width:110px;
+        height:110px;
+      }
+
+      .intro h1{
+        font-size:28px;
+      }
+
+      nav{
+        flex-direction:column;
+        gap:12px;
+      }
     }
   </style>
 </head>
@@ -56,6 +264,7 @@
     <ul>
       <li><a href="#about">Tentang</a></li>
       <li><a href="#project">Project</a></li>
+      <li><a href="#personal">Data Diri</a></li>
       <li><a href="#education">Pendidikan</a></li>
       <li><a href="galeri.html">Galeri</a></li>
     </ul>
@@ -66,36 +275,65 @@
       <div class="avatar" aria-hidden="true">
         <img src="Nurokhim.JPG" alt="Foto Nurokhim">
       </div>
+
       <div class="intro">
         <h1>Muhammad Nurokhim</h1>
-        <p>Designer &amp; Photographer — portfolio minimal, fokus pada karya visual.</p>
+        <p>Portfolio pribadi dengan tampilan modern, tema gelap, dan nuansa biru untuk menampilkan project serta galeri karya.</p>
+
         <div class="meta">
-          <div class="chip">Frontend • HTML / CSS</div>
-          <div class="chip">Fotografi • Editing</div>
-          <div class="chip"><a href="galeri.html" style="text-decoration:none;color:var(--accent)">Lihat Galeri →</a></div>
+          <div class="chip">Dark Mode</div>
+          <div class="chip">Blue Theme</div>
+          <div class="chip">Responsive Design</div>
         </div>
       </div>
     </header>
 
     <section id="project">
-      <h3>Project Unggulan</h3>
-      <div class="projects">
-        <article class="card">
-          <strong>Website Portfolio</strong>
-          <p style="color:var(--muted); margin-top:8px">Desain responsif minimal untuk menampilkan karya dengan fokus visual.</p>
-        </article>
-        <article class="card">
-          <strong>Galeri Fotografi</strong>
-          <p style="color:var(--muted); margin-top:8px">Galeri grid dengan lightbox, caption, dan optimasi gambar.</p>
-        </article>
+      <h3 class="section-title">Project</h3>
+      <div class="card project-card">
+        <strong style="font-size:18px;">Unknown Novel</strong>
+        <p style="color:var(--muted); margin:0;">
+          Website project untuk menampilkan preview web dan pengembangan tampilan modern.
+        </p>
+        <a class="project-link" href="https://unknown-novel.pages.dev" target="_blank" rel="noopener noreferrer">
+          Preview Web
+        </a>
+      </div>
+    </section>
+
+    <section id="personal">
+      <h3 class="section-title">Data Diri</h3>
+      <div class="info-grid">
+        <div class="info-box">
+          <h4>Nama</h4>
+          <p>Muhammad Nurokhim</p>
+        </div>
+        <div class="info-box">
+          <h4>Tanggal Lahir</h4>
+          <p>11 Juli 2007</p>
+        </div>
+        <div class="info-box">
+          <h4>Umur</h4>
+          <p><span id="umur">Menghitung...</span></p>
+        </div>
       </div>
     </section>
 
     <section id="education">
-      <h3>Pendidikan</h3>
-      <div class="card" style="margin-top:12px">
-        <p style="margin:0"><strong>SMA / SMK</strong></p>
-        <p style="color:var(--muted); margin-top:6px">Informasi pendidikan singkat.</p>
+      <h3 class="section-title">Pendidikan</h3>
+      <div class="edu-list">
+        <div class="edu-item">
+          <strong>SD Negeri Sukoreno</strong>
+          <span>Pendidikan dasar</span>
+        </div>
+        <div class="edu-item">
+          <strong>SMP Negeri 1 Sentolo</strong>
+          <span>Pendidikan menengah pertama</span>
+        </div>
+        <div class="edu-item">
+          <strong>SMK Negeri 2 Pengasih</strong>
+          <span>Pendidikan kejuruan</span>
+        </div>
       </div>
     </section>
 
@@ -105,15 +343,26 @@
   </main>
 
   <script>
-    // Smooth scroll for internal links
-    document.querySelectorAll('a[href^="#"]').forEach(a=>{
-      a.addEventListener('click', e=>{
-        e.preventDefault();
-        const id = a.getAttribute('href').slice(1);
-        const el = document.getElementById(id);
-        if(el) el.scrollIntoView({behavior:'smooth', block:'start'});
-      });
-    });
+    // Hitung umur otomatis dari tanggal lahir
+    function hitungUmur(tahun, bulan, tanggal) {
+      const today = new Date();
+      let umur = today.getFullYear() - tahun;
+
+      const bulanSekarang = today.getMonth() + 1;
+      const tanggalSekarang = today.getDate();
+
+      if (
+        bulanSekarang < bulan ||
+        (bulanSekarang === bulan && tanggalSekarang < tanggal)
+      ) {
+        umur--;
+      }
+
+      return umur;
+    }
+
+    const umurEl = document.getElementById('umur');
+    umurEl.textContent = hitungUmur(2007, 7, 11) + ' tahun';
   </script>
 </body>
 </html>

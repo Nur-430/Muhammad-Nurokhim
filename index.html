@@ -1,9 +1,148 @@
-<nav>
-    <h2>Nurokhim</h2>
-    <ul>
-        <li><a href="#about">Tentang</a></li>
-        <li><a href="#project">Project</a></li>
-        <li><a href="#education">Pendidikan</a></li>
-        <li><a href="galeri.html">Galeri</a></li>
-    </ul>
-</nav>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Galeri — Nurokhim</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 12px;
+      margin-top: 24px;
+    }
+    .card {
+      border: none;
+      border-radius: 8px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+      overflow: hidden;
+      cursor: pointer;
+      position: relative;
+    }
+    .card-img-top {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      transition: transform .23s;
+    }
+    .card:hover .card-img-top {
+      transform: scale(1.04);
+    }
+    .caption {
+      position: absolute;
+      left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.55);
+      color: #fff;
+      padding: 8px 12px;
+      font-size: 14px;
+      text-align: left;
+      border-radius: 0 0 8px 8px;
+      z-index: 2;
+    }
+    /* Lightbox */
+    .lightbox{
+      position:fixed; inset:0; display:none; align-items:center; justify-content:center; background:rgba(2,6,23,0.6); z-index:90;
+    }
+    .lightbox.visible{display:flex}
+    .lb-inner{max-width:90vw; max-height:90vh; position:relative}
+    .lb-img{display:block; max-width:100%; max-height:80vh; border-radius:10px; background:#111}
+    .lb-caption{color:#fff; margin-top:8px; text-align:center; font-size:15px}
+    .lb-close{
+      position:absolute; top:10px; right:10px;
+      background:rgba(0,0,0,0.5); color:#fff; border:0; padding:8px 14px; border-radius:8px; cursor:pointer;
+      font-size:20px;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-light bg-light">
+    <a class="navbar-brand" href="index.html">Home</a>
+    <a class="navbar-brand" href="galeri.html">Galeri</a>
+  </nav>
+  <div class="container">
+    <h1 class="text-center mt-4">Galeri Gambar</h1>
+    <div class="gallery" id="gallery"></div>
+  </div>
+
+  <!-- LIGHTBOX -->
+  <div id="lightbox" class="lightbox" aria-modal="true">
+    <div class="lb-inner">
+      <img id="lbImage" class="lb-img" src="" alt="">
+      <button id="lbClose" class="lb-close" aria-label="Tutup">✕</button>
+      <div id="lbCaption" class="lb-caption"></div>
+    </div>
+  </div>
+
+  <!-- Supabase JS -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.0.0/dist/umd/supabase.js"></script>
+  <script>
+  // Supabase credentials
+  const SUPABASE_URL = "https://wcwbyqrxocjgykwonmoo.supabase.co";
+  const SUPABASE_KEY = "eyJhbGci0iJIUzI1NiIsInR5cCI6IkpXV CJ9.eyJpc3Mi0iJzdXBhYmFzZSIsInJlZiI6Indjd2J5cXJ4b2NqZ31rd29 ubW9vIiwicm9sZSI6ImFub24iLCJpYXQi0jE3NzEwOTIwNjAsImV4cCI6Mj A4NjY20DA2MH0.Pthqfu4N393tb0Mv6uuRUeHWevCU03g0HF1vwsPgWSk";
+  const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+  const gallery = document.getElementById('gallery');
+  const lightbox = document.getElementById('lightbox');
+  const lbImage = document.getElementById('lbImage');
+  const lbClose = document.getElementById('lbClose');
+  const lbCaption = document.getElementById('lbCaption');
+
+  let items = [];
+  let currentIndex = 0;
+
+  // Ambil daftar file dari Supabase storage (bucket: uploads)
+  async function loadGallery() {
+    const { data, error } = await supabase.storage.from('uploads').list('');
+    if(error){ gallery.innerHTML = "<div class='text-danger'>Gagal memuat galeri.</div>"; return; }
+
+    items = data || [];
+    gallery.innerHTML = "";
+    items.forEach((file, idx) => {
+      // Keterangan dari nama file (atau bisa pakai metadata Supabase/rename sesuai kebutuhan)
+      const caption = file.name.replace(/\.[a-z0-9]+$/i, '').replace(/[_-]/g, ' ');
+      const imgUrl = `${SUPABASE_URL}/storage/v1/object/public/uploads/${file.name}`;
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.tabIndex = 0;
+      card.setAttribute('aria-label', caption);
+      card.innerHTML = `
+        <img src="${imgUrl}" alt="${caption}" class="card-img-top" loading="lazy">
+        <div class="caption">${caption}</div>
+      `;
+      card.addEventListener('click', () => openLightbox(idx));
+      gallery.appendChild(card);
+    });
+  }
+
+  // LIGHTBOX fn
+  function openLightbox(idx){
+    currentIndex = idx;
+    const file = items[idx];
+    const caption = file.name.replace(/\.[a-z0-9]+$/i, '').replace(/[_-]/g, ' ');
+    const imgUrl = `${SUPABASE_URL}/storage/v1/object/public/uploads/${file.name}`;
+    lbImage.src = imgUrl;
+    lbImage.alt = caption;
+    lbCaption.textContent = caption;
+    lightbox.classList.add('visible');
+    document.body.style.overflow = 'hidden';
+    lbClose.focus();
+  }
+  function closeLightbox(){
+    lightbox.classList.remove('visible');
+    document.body.style.overflow = '';
+    lbImage.src = '';
+  }
+  lbClose.addEventListener('click', closeLightbox);
+  lightbox.addEventListener('click', e => { if(e.target === lightbox) closeLightbox(); });
+
+  // keyboard ESC
+  document.addEventListener('keydown', e => {
+    if(lightbox.classList.contains('visible')) {
+      if(e.key==="Escape") closeLightbox();
+    }
+  });
+  window.onload = loadGallery;
+  </script>
+</body>
+</html>

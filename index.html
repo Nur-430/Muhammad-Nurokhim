@@ -1,148 +1,119 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Galeri — Nurokhim</title>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <title>Nurokhim — Portfolio</title>
   <style>
-    .gallery {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-      gap: 12px;
-      margin-top: 24px;
+    :root{
+      --bg:#ffffff; --text:#0f1720; --muted:#6b7280;
+      --accent:#0ea5a3; --maxw:1000px;
+      --radius:12px;
     }
-    .card {
-      border: none;
-      border-radius: 8px;
-      box-shadow: 0 4px 14px rgba(0,0,0,0.08);
-      overflow: hidden;
-      cursor: pointer;
-      position: relative;
+    *{box-sizing:border-box}
+    body{
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      margin:0; color:var(--text); background:var(--bg); line-height:1.4;
+      -webkit-font-smoothing:antialiased;
     }
-    .card-img-top {
-      width: 100%;
-      height: 180px;
-      object-fit: cover;
-      transition: transform .23s;
+    nav{
+      display:flex; justify-content:space-between; align-items:center;
+      padding:18px 20px; border-bottom:1px solid #e6e9ee; background:#fff;
+      position:sticky; top:0; z-index:20;
     }
-    .card:hover .card-img-top {
-      transform: scale(1.04);
+    nav h2{margin:0; font-size:18px; letter-spacing:0.4px;}
+    nav ul{list-style:none; margin:0; padding:0; display:flex; gap:16px; align-items:center;}
+    nav a{color:var(--muted); text-decoration:none; font-weight:600}
+    nav a:hover{color:var(--text)}
+    .container{max-width:var(--maxw); margin:40px auto; padding:0 20px}
+    .hero{display:flex; gap:28px; align-items:center}
+    .avatar{
+      width:120px; height:120px; border-radius:999px; overflow:hidden; flex:0 0 120px;
+      box-shadow:0 8px 24px rgba(2,6,23,0.08);
     }
-    .caption {
-      position: absolute;
-      left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.55);
-      color: #fff;
-      padding: 8px 12px;
-      font-size: 14px;
-      text-align: left;
-      border-radius: 0 0 8px 8px;
-      z-index: 2;
+    .avatar img{width:100%; height:100%; object-fit:cover; display:block}
+    .intro h1{margin:0 0 6px; font-size:28px}
+    .intro p{margin:0; color:var(--muted)}
+    .meta{margin-top:18px; display:flex; gap:12px; flex-wrap:wrap}
+    .chip{padding:8px 12px; background:#f8fafb;border-radius:999px;color:var(--muted);font-size:14px}
+    section{margin-top:48px}
+    h3{margin:0 0 12px}
+    .projects{display:grid; gap:14px; grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+    .card{
+      padding:14px; border-radius:12px; background:#fff; box-shadow:0 6px 20px rgba(2,6,23,0.04);
+      border:1px solid #f0f3f6;
     }
-    /* Lightbox */
-    .lightbox{
-      position:fixed; inset:0; display:none; align-items:center; justify-content:center; background:rgba(2,6,23,0.6); z-index:90;
-    }
-    .lightbox.visible{display:flex}
-    .lb-inner{max-width:90vw; max-height:90vh; position:relative}
-    .lb-img{display:block; max-width:100%; max-height:80vh; border-radius:10px; background:#111}
-    .lb-caption{color:#fff; margin-top:8px; text-align:center; font-size:15px}
-    .lb-close{
-      position:absolute; top:10px; right:10px;
-      background:rgba(0,0,0,0.5); color:#fff; border:0; padding:8px 14px; border-radius:8px; cursor:pointer;
-      font-size:20px;
+    footer{padding:32px 0; color:var(--muted); text-align:center}
+    @media (max-width:640px){
+      .hero{flex-direction:column; align-items:flex-start}
+      .avatar{width:96px;height:96px}
     }
   </style>
 </head>
 <body>
-  <nav class="navbar navbar-light bg-light">
-    <a class="navbar-brand" href="index.html">Home</a>
-    <a class="navbar-brand" href="galeri.html">Galeri</a>
+  <nav>
+    <h2>Nurokhim</h2>
+    <ul>
+      <li><a href="#about">Tentang</a></li>
+      <li><a href="#project">Project</a></li>
+      <li><a href="#education">Pendidikan</a></li>
+      <li><a href="galeri.html">Galeri</a></li>
+    </ul>
   </nav>
-  <div class="container">
-    <h1 class="text-center mt-4">Galeri Gambar</h1>
-    <div class="gallery" id="gallery"></div>
-  </div>
 
-  <!-- LIGHTBOX -->
-  <div id="lightbox" class="lightbox" aria-modal="true">
-    <div class="lb-inner">
-      <img id="lbImage" class="lb-img" src="" alt="">
-      <button id="lbClose" class="lb-close" aria-label="Tutup">✕</button>
-      <div id="lbCaption" class="lb-caption"></div>
-    </div>
-  </div>
+  <main class="container">
+    <header class="hero" id="about">
+      <div class="avatar" aria-hidden="true">
+        <img src="images/Nurokhim.JPG" alt="Foto Nurokhim">
+      </div>
+      <div class="intro">
+        <h1>Muhammad Nurokhim</h1>
+        <p>Designer &amp; Photographer — portfolio minimal, fokus pada karya visual.</p>
+        <div class="meta">
+          <div class="chip">Frontend • HTML / CSS</div>
+          <div class="chip">Fotografi • Editing</div>
+          <div class="chip"><a href="galeri.html" style="text-decoration:none;color:var(--accent)">Lihat Galeri →</a></div>
+        </div>
+      </div>
+    </header>
 
-  <!-- Supabase JS -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.0.0/dist/umd/supabase.js"></script>
+    <section id="project">
+      <h3>Project Unggulan</h3>
+      <div class="projects">
+        <article class="card">
+          <strong>Website Portfolio</strong>
+          <p style="color:var(--muted); margin-top:8px">Desain responsif minimal untuk menampilkan karya dengan fokus visual.</p>
+        </article>
+        <article class="card">
+          <strong>Galeri Fotografi</strong>
+          <p style="color:var(--muted); margin-top:8px">Galeri grid dengan lightbox, caption, dan optimasi gambar.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="education">
+      <h3>Pendidikan</h3>
+      <div class="card" style="margin-top:12px">
+        <p style="margin:0"><strong>SMA / SMK</strong></p>
+        <p style="color:var(--muted); margin-top:6px">Informasi pendidikan singkat.</p>
+      </div>
+    </section>
+
+    <footer>
+      © 2026 Muhammad Nurokhim — <a href="galeri.html">Galeri</a>
+    </footer>
+  </main>
+
   <script>
-  // Supabase credentials
-  const SUPABASE_URL = "https://wcwbyqrxocjgykwonmoo.supabase.co";
-  const SUPABASE_KEY = "eyJhbGci0iJIUzI1NiIsInR5cCI6IkpXV CJ9.eyJpc3Mi0iJzdXBhYmFzZSIsInJlZiI6Indjd2J5cXJ4b2NqZ31rd29 ubW9vIiwicm9sZSI6ImFub24iLCJpYXQi0jE3NzEwOTIwNjAsImV4cCI6Mj A4NjY20DA2MH0.Pthqfu4N393tb0Mv6uuRUeHWevCU03g0HF1vwsPgWSk";
-  const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-  const gallery = document.getElementById('gallery');
-  const lightbox = document.getElementById('lightbox');
-  const lbImage = document.getElementById('lbImage');
-  const lbClose = document.getElementById('lbClose');
-  const lbCaption = document.getElementById('lbCaption');
-
-  let items = [];
-  let currentIndex = 0;
-
-  // Ambil daftar file dari Supabase storage (bucket: uploads)
-  async function loadGallery() {
-    const { data, error } = await supabase.storage.from('uploads').list('');
-    if(error){ gallery.innerHTML = "<div class='text-danger'>Gagal memuat galeri.</div>"; return; }
-
-    items = data || [];
-    gallery.innerHTML = "";
-    items.forEach((file, idx) => {
-      // Keterangan dari nama file (atau bisa pakai metadata Supabase/rename sesuai kebutuhan)
-      const caption = file.name.replace(/\.[a-z0-9]+$/i, '').replace(/[_-]/g, ' ');
-      const imgUrl = `${SUPABASE_URL}/storage/v1/object/public/uploads/${file.name}`;
-      const card = document.createElement('div');
-      card.className = 'card';
-      card.tabIndex = 0;
-      card.setAttribute('aria-label', caption);
-      card.innerHTML = `
-        <img src="${imgUrl}" alt="${caption}" class="card-img-top" loading="lazy">
-        <div class="caption">${caption}</div>
-      `;
-      card.addEventListener('click', () => openLightbox(idx));
-      gallery.appendChild(card);
+    // Smooth scroll for internal links
+    document.querySelectorAll('a[href^="#"]').forEach(a=>{
+      a.addEventListener('click', e=>{
+        e.preventDefault();
+        const id = a.getAttribute('href').slice(1);
+        const el = document.getElementById(id);
+        if(el) el.scrollIntoView({behavior:'smooth', block:'start'});
+      });
     });
-  }
-
-  // LIGHTBOX fn
-  function openLightbox(idx){
-    currentIndex = idx;
-    const file = items[idx];
-    const caption = file.name.replace(/\.[a-z0-9]+$/i, '').replace(/[_-]/g, ' ');
-    const imgUrl = `${SUPABASE_URL}/storage/v1/object/public/uploads/${file.name}`;
-    lbImage.src = imgUrl;
-    lbImage.alt = caption;
-    lbCaption.textContent = caption;
-    lightbox.classList.add('visible');
-    document.body.style.overflow = 'hidden';
-    lbClose.focus();
-  }
-  function closeLightbox(){
-    lightbox.classList.remove('visible');
-    document.body.style.overflow = '';
-    lbImage.src = '';
-  }
-  lbClose.addEventListener('click', closeLightbox);
-  lightbox.addEventListener('click', e => { if(e.target === lightbox) closeLightbox(); });
-
-  // keyboard ESC
-  document.addEventListener('keydown', e => {
-    if(lightbox.classList.contains('visible')) {
-      if(e.key==="Escape") closeLightbox();
-    }
-  });
-  window.onload = loadGallery;
   </script>
 </body>
 </html>

@@ -8,11 +8,9 @@
     :root {
       --bg: #0b1220;
       --card: #111827;
-      --card2: #1f2937;
       --text: #e5e7eb;
       --muted: #94a3b8;
       --blue: #3b82f6;
-      --blue2: #2563eb;
       --border: rgba(255,255,255,0.08);
       --shadow: 0 12px 30px rgba(0,0,0,0.35);
       --radius: 18px;
@@ -30,7 +28,6 @@
         linear-gradient(180deg, #0b1220, #0f172a);
       color: var(--text);
       min-height: 100vh;
-      -webkit-font-smoothing: antialiased;
     }
 
     nav {
@@ -45,6 +42,7 @@
       background: rgba(11, 18, 32, 0.78);
       backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--border);
+      flex-wrap: wrap;
     }
 
     nav a {
@@ -100,7 +98,6 @@
     .card:hover {
       transform: translateY(-6px);
       border-color: rgba(59,130,246,0.35);
-      box-shadow: 0 18px 40px rgba(0,0,0,0.45);
     }
 
     .card img {
@@ -146,7 +143,6 @@
 
     .error { color: #fca5a5; }
 
-    /* LIGHTBOX */
     .lightbox {
       position: fixed;
       inset: 0;
@@ -212,13 +208,7 @@
       color: #fff;
       font-weight: 700;
       cursor: pointer;
-      transition: .2s;
       min-width: 110px;
-    }
-
-    .lb-btn:hover {
-      background: rgba(59,130,246,0.28);
-      transform: translateY(-2px);
     }
 
     .lb-info {
@@ -266,38 +256,10 @@
       z-index: 3;
     }
 
-    .lb-close:hover {
-      background: rgba(239,68,68,0.28);
-    }
-
     footer {
       text-align: center;
       padding: 28px 20px 40px;
       color: var(--muted);
-    }
-
-    @media (max-width: 768px) {
-      .card img {
-        height: 210px;
-      }
-
-      .lb-content {
-        width: 100%;
-      }
-
-      .lb-image-wrap {
-        min-height: 44vh;
-        max-height: 62vh;
-      }
-
-      .lb-image {
-        max-height: 60vh;
-      }
-
-      .lb-btn {
-        min-width: 92px;
-        padding: 10px 14px;
-      }
     }
   </style>
 </head>
@@ -305,7 +267,7 @@
   <nav>
     <a href="index.html">Home</a>
     <a href="galeri.html" class="active">Galeri</a>
-    <a href="admin.html">Admin</a>
+    <a href="admin-login.html">Admin</a>
   </nav>
 
   <main class="container">
@@ -321,7 +283,6 @@
     © 2026 Muhammad Nurokhim
   </footer>
 
-  <!-- LIGHTBOX -->
   <div class="lightbox" id="lightbox" aria-modal="true" role="dialog">
     <div class="lb-content">
       <button class="lb-close" id="lbClose" aria-label="Tutup">✕</button>
@@ -330,13 +291,11 @@
         <img id="lbImage" class="lb-image" src="" alt="" draggable="false" />
       </div>
 
-      <!-- tombol dipindah ke bawah foto -->
       <div class="lb-controls">
         <button class="lb-btn" id="prevBtn">⟵ Previous</button>
         <button class="lb-btn" id="nextBtn">Next ⟶</button>
       </div>
 
-      <!-- info di bawah tombol -->
       <div class="lb-info">
         <h2 class="lb-title" id="lbTitle"></h2>
         <p class="lb-desc" id="lbDesc"></p>
@@ -348,7 +307,7 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
     const SUPABASE_URL = "https://wcwbyqrxocjgykwonmoo.supabase.co";
-    const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indjd2J5cXJ4b2NqZ3lrd29ubW9vIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzEwOTIwNjAsImV4cCI6MjA4NjY2ODA2MH0.Pthqfu4N393tb0Mv6uuRUeHWevCU03gOHF1vwsPgWSk"; // ganti pakai anon key milikmu
+    const SUPABASE_KEY = "PASTE_ANON_KEY_KAMU_DI_SINI";
     const client = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
     const gallery = document.getElementById("gallery");
@@ -375,6 +334,15 @@
         hour: "2-digit",
         minute: "2-digit"
       });
+    }
+
+    function escapeHtml(str = "") {
+      return str
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
     }
 
     async function loadGallery() {
@@ -463,16 +431,6 @@
       renderLightbox();
     }
 
-    function escapeHtml(str = "") {
-      return str
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
-    }
-
-    // Events
     lbClose.addEventListener("click", closeLightbox);
     nextBtn.addEventListener("click", nextImage);
     prevBtn.addEventListener("click", prevImage);
@@ -489,7 +447,6 @@
       if (e.key === "ArrowLeft") prevImage();
     });
 
-    // Anti right click & drag (tidak 100% anti-download)
     document.addEventListener("contextmenu", (e) => e.preventDefault());
     document.addEventListener("dragstart", (e) => {
       if (e.target.tagName === "IMG") e.preventDefault();

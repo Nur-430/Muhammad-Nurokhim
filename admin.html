@@ -14,7 +14,6 @@
       --blue: #3b82f6;
       --blue2: #2563eb;
       --red: #ef4444;
-      --green: #22c55e;
       --border: rgba(255,255,255,0.08);
       --shadow: 0 12px 30px rgba(0,0,0,0.35);
       --radius: 18px;
@@ -45,17 +44,22 @@
       background: rgba(11, 18, 32, 0.78);
       backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--border);
+      flex-wrap: wrap;
     }
 
-    nav a {
+    nav a, nav button {
       text-decoration: none;
       color: var(--muted);
       font-weight: 600;
       padding: 10px 14px;
       border-radius: 12px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
     }
 
-    nav a:hover,
+    nav a:hover, nav button:hover,
     nav a.active {
       color: #fff;
       background: rgba(59,130,246,0.14);
@@ -69,9 +73,15 @@
 
     h1 {
       text-align: center;
-      margin: 0 0 24px;
+      margin: 0 0 8px;
       font-size: clamp(28px, 4vw, 42px);
       font-weight: 800;
+    }
+
+    .admin-email {
+      text-align: center;
+      color: var(--muted);
+      margin-bottom: 24px;
     }
 
     .panel {
@@ -217,6 +227,12 @@
     .edit-box.active {
       display: block;
     }
+
+    .loading {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--muted);
+    }
   </style>
 </head>
 <body>
@@ -224,10 +240,12 @@
     <a href="index.html">Home</a>
     <a href="galeri.html">Galeri</a>
     <a href="admin.html" class="active">Admin</a>
+    <button id="logoutBtn">Logout</button>
   </nav>
 
-  <main class="container">
+  <main class="container" id="app" style="display:none;">
     <h1>Admin Galeri</h1>
+    <div class="admin-email" id="adminEmail"></div>
 
     <section class="panel">
       <h2>Upload Gambar</h2>
@@ -262,11 +280,20 @@
     </section>
   </main>
 
+  <div class="loading" id="loading">Memeriksa akses admin...</div>
+
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
     const SUPABASE_URL = "https://wcwbyqrxocjgykwonmoo.supabase.co";
-    const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indjd2J5cXJ4b2NqZ3lrd29ubW9vIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzEwOTIwNjAsImV4cCI6MjA4NjY2ODA2MH0.Pthqfu4N393tb0Mv6uuRUeHWevCU03gOHF1vwsPgWSk"; // ganti pakai anon key milikmu
+    const SUPABASE_KEY = "PASTE_ANON_KEY_KAMU_DI_SINI";
+    const ADMIN_EMAIL = "EMAIL_ADMIN_KAMU"; // contoh: adminkamu@gmail.com
+
     const client = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    const app = document.getElementById("app");
+    const loading = document.getElementById("loading");
+    const adminEmail = document.getElementById("adminEmail");
+    const logoutBtn = document.getElementById("logoutBtn");
 
     const imageFile = document.getElementById("imageFile");
     const imageTitle = document.getElementById("imageTitle");
@@ -275,6 +302,8 @@
     const uploadStatus = document.getElementById("uploadStatus");
     const adminGallery = document.getElementById("adminGallery");
     const manageStatus = document.getElementById("manageStatus");
+
+    let currentUser = null;
 
     function formatDate(dateString) {
       const date = new Date(dateString);
@@ -303,6 +332,35 @@
         .replace(/[^a-z0-9]+/g, "-")
         .replace(/^-+|-+$/g, "");
       return `${Date.now()}-${safeBase}.${ext}`;
+    }
+
+    async function requireAdmin() {
+      const { data, error } = await client.auth.getSession();
+
+      if (error || !data.session) {
+        window.location.href = "admin-login.html";
+        return false;
+      }
+
+      const user = data.session.user;
+      const email = user?.email || "";
+
+      if (email.toLowerCase() !== ADMIN_EMAIL.toLowerCase()) {
+        await client.auth.signOut();
+        window.location.href = "admin-login.html";
+        return false;
+      }
+
+      currentUser = user;
+      adminEmail.textContent = "Login sebagai: " + email;
+      loading.style.display = "none";
+      app.style.display = "block";
+      return true;
+    }
+
+    async function logout() {
+      await client.auth.signOut();
+      window.location.href = "admin-login.html";
     }
 
     async function uploadImage() {
@@ -507,15 +565,20 @@
       });
     }
 
+    logoutBtn.addEventListener("click", logout);
     uploadBtn.addEventListener("click", uploadImage);
 
-    // Anti right click & drag
     document.addEventListener("contextmenu", (e) => e.preventDefault());
     document.addEventListener("dragstart", (e) => {
       if (e.target.tagName === "IMG") e.preventDefault();
     });
 
-    loadAdminGallery();
+    (async function init() {
+      const ok = await requireAdmin();
+      if (ok) {
+        loadAdminGallery();
+      }
+    })();
   </script>
 </body>
 </html>

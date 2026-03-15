@@ -2,469 +2,497 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Galeri — Nurokhim</title>
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Galeri - Nurokhim</title>
   <style>
-    :root{
-      --bg:#0b1220;
-      --card:#182235;
-      --card-2:#1e2a44;
-      --text:#e5eefc;
-      --muted:#94a3b8;
-      --accent:#3b82f6;
-      --accent-2:#60a5fa;
-      --border:rgba(148,163,184,0.15);
-      --shadow:0 10px 30px rgba(0,0,0,0.35);
-      --maxw:1200px;
+    :root {
+      --bg: #0b1220;
+      --card: #111827;
+      --card2: #1f2937;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --blue: #3b82f6;
+      --blue2: #2563eb;
+      --border: rgba(255,255,255,0.08);
+      --shadow: 0 12px 30px rgba(0,0,0,0.35);
+      --radius: 18px;
+      --maxw: 1200px;
     }
 
-    *{box-sizing:border-box}
+    * { box-sizing: border-box; }
 
-    body{
-      margin:0;
-      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-      color:var(--text);
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
       background:
-        radial-gradient(circle at top right, rgba(59,130,246,0.18), transparent 30%),
-        radial-gradient(circle at bottom left, rgba(96,165,250,0.10), transparent 35%),
-        linear-gradient(180deg, #0b1220 0%, #0f172a 100%);
-      min-height:100vh;
-      user-select:none;
+        radial-gradient(circle at top right, rgba(59,130,246,0.15), transparent 25%),
+        radial-gradient(circle at bottom left, rgba(37,99,235,0.12), transparent 30%),
+        linear-gradient(180deg, #0b1220, #0f172a);
+      color: var(--text);
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
     }
 
-    nav{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      padding:18px 22px;
-      border-bottom:1px solid var(--border);
-      background:rgba(11,18,32,0.85);
-      backdrop-filter:blur(12px);
-      position:sticky;
-      top:0;
-      z-index:50;
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      align-items: center;
+      padding: 16px 20px;
+      background: rgba(11, 18, 32, 0.78);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
     }
 
-    nav a{
-      color:var(--muted);
-      text-decoration:none;
-      font-weight:700;
-      margin-right:14px;
+    nav a {
+      text-decoration: none;
+      color: var(--muted);
+      font-weight: 600;
+      padding: 10px 14px;
+      border-radius: 12px;
+      transition: .2s;
     }
 
-    nav a:hover{
-      color:var(--accent-2);
+    nav a:hover,
+    nav a.active {
+      color: #fff;
+      background: rgba(59,130,246,0.14);
     }
 
-    .container{
-      max-width:var(--maxw);
-      margin:32px auto;
-      padding:0 20px;
+    .container {
+      max-width: var(--maxw);
+      margin: 0 auto;
+      padding: 30px 20px 60px;
     }
 
-    .header-box{
-      background:rgba(24,34,53,0.8);
-      border:1px solid var(--border);
-      border-radius:22px;
-      padding:24px;
-      box-shadow:var(--shadow);
-      margin-bottom:24px;
+    .page-header {
+      text-align: center;
+      margin-bottom: 26px;
     }
 
-    h1{
-      margin:0 0 8px;
-      font-size:32px;
-      color:#fff;
+    .page-header h1 {
+      margin: 0;
+      font-size: clamp(28px, 4vw, 42px);
+      font-weight: 800;
+      color: #fff;
     }
 
-    .subtext{
-      margin:0;
-      color:var(--muted);
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 18px;
     }
 
-    .status-box{
-      background:rgba(24,34,53,0.8);
-      border:1px solid var(--border);
-      color:var(--muted);
-      padding:18px;
-      border-radius:16px;
-      box-shadow:var(--shadow);
-      margin-bottom:20px;
+    .card {
+      position: relative;
+      overflow: hidden;
+      border-radius: var(--radius);
+      background: rgba(17, 24, 39, 0.9);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      cursor: pointer;
+      transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
     }
 
-    .gallery{
-      display:grid;
-      grid-template-columns:repeat(auto-fill, minmax(250px, 1fr));
-      gap:18px;
+    .card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(59,130,246,0.35);
+      box-shadow: 0 18px 40px rgba(0,0,0,0.45);
     }
 
-    .card{
-      border:1px solid var(--border);
-      border-radius:18px;
-      box-shadow:var(--shadow);
-      overflow:hidden;
-      cursor:pointer;
-      position:relative;
-      background:rgba(24,34,53,0.85);
-      transition:transform .25s ease, box-shadow .25s ease;
+    .card img {
+      width: 100%;
+      height: 240px;
+      object-fit: cover;
+      display: block;
+      user-select: none;
+      -webkit-user-drag: none;
+      pointer-events: none;
     }
 
-    .card:hover{
-      transform:translateY(-5px);
+    .card-overlay {
+      position: absolute;
+      inset: auto 0 0 0;
+      padding: 12px;
+      background: linear-gradient(to top, rgba(0,0,0,.7), rgba(0,0,0,.15), transparent);
     }
 
-    .card img{
-      width:100%;
-      height:220px;
-      object-fit:cover;
-      display:block;
-      user-select:none;
-      -webkit-user-drag:none;
+    .card-title {
+      margin: 0;
+      font-size: 15px;
+      font-weight: 700;
+      color: #fff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
-    .card-body{
-      padding:14px;
+    .card-date {
+      margin-top: 4px;
+      font-size: 12px;
+      color: #cbd5e1;
     }
 
-    .card-title{
-      font-weight:800;
-      color:#fff;
-      margin-bottom:8px;
-      font-size:16px;
+    .empty, .error {
+      text-align: center;
+      padding: 28px;
+      border-radius: 16px;
+      background: rgba(17, 24, 39, 0.9);
+      border: 1px solid var(--border);
     }
 
-    .card-desc{
-      color:var(--muted);
-      font-size:14px;
-      margin-bottom:10px;
-      min-height:40px;
+    .error { color: #fca5a5; }
+
+    /* LIGHTBOX */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      background: rgba(2, 6, 23, 0.95);
+      z-index: 999;
+      padding: 16px;
     }
 
-    .card-date{
-      color:#93c5fd;
-      font-size:13px;
+    .lightbox.visible {
+      display: flex;
     }
 
-    /* FULLSCREEN MODAL */
-    .viewer{
-      position:fixed;
-      inset:0;
-      background:rgba(2,6,23,0.95);
-      display:none;
-      z-index:999;
-      padding:20px;
-      align-items:center;
-      justify-content:center;
-      flex-direction:column;
+    .lb-content {
+      width: min(98vw, 1500px);
+      max-height: 96vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
     }
 
-    .viewer.active{
-      display:flex;
+    .lb-image-wrap {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 58vh;
+      max-height: 76vh;
+      overflow: hidden;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+      padding: 8px;
     }
 
-    .viewer-top{
-      position:absolute;
-      top:14px;
-      right:14px;
-      display:flex;
-      gap:10px;
-      z-index:2;
+    .lb-image {
+      max-width: 100%;
+      max-height: 74vh;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+      border-radius: 14px;
+      user-select: none;
+      -webkit-user-drag: none;
     }
 
-    .viewer-btn{
-      border:none;
-      background:rgba(15,23,42,0.9);
-      color:#fff;
-      padding:10px 14px;
-      border-radius:12px;
-      cursor:pointer;
-      font-weight:800;
-      border:1px solid rgba(255,255,255,0.08);
+    .lb-controls {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 16px;
+      flex-wrap: wrap;
     }
 
-    .viewer-btn:hover{
-      background:rgba(30,41,59,0.95);
+    .lb-btn {
+      border: none;
+      border-radius: 14px;
+      padding: 12px 18px;
+      background: rgba(59,130,246,0.16);
+      color: #fff;
+      font-weight: 700;
+      cursor: pointer;
+      transition: .2s;
+      min-width: 110px;
     }
 
-    .viewer-main{
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      width:100%;
-      max-width:1400px;
-      gap:16px;
+    .lb-btn:hover {
+      background: rgba(59,130,246,0.28);
+      transform: translateY(-2px);
     }
 
-    .nav-btn{
-      border:none;
-      background:rgba(15,23,42,0.85);
-      color:#fff;
-      width:54px;
-      height:54px;
-      border-radius:50%;
-      cursor:pointer;
-      font-size:22px;
-      font-weight:900;
-      flex-shrink:0;
-      border:1px solid rgba(255,255,255,0.08);
+    .lb-info {
+      width: min(900px, 100%);
+      margin-top: 16px;
+      background: rgba(17, 24, 39, 0.9);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px;
+      padding: 16px;
+      text-align: center;
     }
 
-    .nav-btn:hover{
-      background:rgba(30,41,59,0.95);
+    .lb-title {
+      margin: 0 0 8px;
+      font-size: clamp(20px, 2vw, 26px);
+      font-weight: 800;
+      color: #fff;
     }
 
-    .viewer-content{
-      max-width:100%;
-      display:flex;
-      flex-direction:column;
-      align-items:center;
+    .lb-desc {
+      margin: 0;
+      color: #cbd5e1;
+      line-height: 1.6;
+      white-space: pre-wrap;
     }
 
-    .viewer-image{
-      max-width:85vw;
-      max-height:70vh;
-      border-radius:16px;
-      display:block;
-      object-fit:contain;
-      box-shadow:0 20px 50px rgba(0,0,0,0.6);
-      user-select:none;
-      -webkit-user-drag:none;
-      pointer-events:none;
+    .lb-date {
+      margin-top: 10px;
+      font-size: 13px;
+      color: var(--muted);
     }
 
-    .viewer-info{
-      margin-top:16px;
-      width:min(85vw, 900px);
-      background:rgba(24,34,53,0.8);
-      border:1px solid var(--border);
-      border-radius:18px;
-      padding:18px;
-      box-shadow:var(--shadow);
+    .lb-close {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      border: none;
+      border-radius: 14px;
+      padding: 12px 16px;
+      background: rgba(239,68,68,0.18);
+      color: #fff;
+      font-size: 18px;
+      font-weight: 700;
+      cursor: pointer;
+      z-index: 3;
     }
 
-    .viewer-title{
-      font-size:22px;
-      font-weight:900;
-      color:#fff;
-      margin-bottom:8px;
+    .lb-close:hover {
+      background: rgba(239,68,68,0.28);
     }
 
-    .viewer-desc{
-      color:var(--muted);
-      margin-bottom:10px;
-      line-height:1.6;
+    footer {
+      text-align: center;
+      padding: 28px 20px 40px;
+      color: var(--muted);
     }
 
-    .viewer-date{
-      color:#93c5fd;
-      font-size:14px;
-      font-weight:700;
-    }
-
-    @media (max-width:768px){
-      .viewer-main{
-        gap:10px;
+    @media (max-width: 768px) {
+      .card img {
+        height: 210px;
       }
 
-      .nav-btn{
-        width:46px;
-        height:46px;
+      .lb-content {
+        width: 100%;
       }
 
-      .viewer-image{
-        max-width:75vw;
-        max-height:58vh;
+      .lb-image-wrap {
+        min-height: 44vh;
+        max-height: 62vh;
       }
 
-      .viewer-info{
-        width:92vw;
+      .lb-image {
+        max-height: 60vh;
+      }
+
+      .lb-btn {
+        min-width: 92px;
+        padding: 10px 14px;
       }
     }
   </style>
 </head>
 <body>
   <nav>
-    <div>
-      <a href="index.html">Home</a>
-      <a href="galeri.html">Galeri</a>
-    </div>
+    <a href="index.html">Home</a>
+    <a href="galeri.html" class="active">Galeri</a>
+    <a href="admin.html">Admin</a>
   </nav>
 
-  <div class="container">
-    <div class="header-box">
+  <main class="container">
+    <header class="page-header">
       <h1>Galeri</h1>
-      <p class="subtext">Galeri karya dengan tampilan fullscreen, navigasi next/previous, dan informasi lengkap gambar.</p>
-    </div>
+    </header>
 
-    <div id="status" class="status-box">Memuat galeri...</div>
-    <div class="gallery" id="gallery"></div>
-  </div>
+    <section class="gallery" id="gallery"></section>
+    <div id="statusBox"></div>
+  </main>
 
-  <!-- FULLSCREEN VIEWER -->
-  <div id="viewer" class="viewer" aria-modal="true">
-    <div class="viewer-top">
-      <button class="viewer-btn" id="closeViewer">✕ Exit</button>
-    </div>
+  <footer>
+    © 2026 Muhammad Nurokhim
+  </footer>
 
-    <div class="viewer-main">
-      <button class="nav-btn" id="prevBtn">❮</button>
+  <!-- LIGHTBOX -->
+  <div class="lightbox" id="lightbox" aria-modal="true" role="dialog">
+    <div class="lb-content">
+      <button class="lb-close" id="lbClose" aria-label="Tutup">✕</button>
 
-      <div class="viewer-content">
-        <img id="viewerImage" class="viewer-image" src="" alt="" draggable="false">
-        <div class="viewer-info">
-          <div id="viewerTitle" class="viewer-title"></div>
-          <div id="viewerDesc" class="viewer-desc"></div>
-          <div id="viewerDate" class="viewer-date"></div>
-        </div>
+      <div class="lb-image-wrap">
+        <img id="lbImage" class="lb-image" src="" alt="" draggable="false" />
       </div>
 
-      <button class="nav-btn" id="nextBtn">❯</button>
+      <!-- tombol dipindah ke bawah foto -->
+      <div class="lb-controls">
+        <button class="lb-btn" id="prevBtn">⟵ Previous</button>
+        <button class="lb-btn" id="nextBtn">Next ⟶</button>
+      </div>
+
+      <!-- info di bawah tombol -->
+      <div class="lb-info">
+        <h2 class="lb-title" id="lbTitle"></h2>
+        <p class="lb-desc" id="lbDesc"></p>
+        <div class="lb-date" id="lbDate"></div>
+      </div>
     </div>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
     const SUPABASE_URL = "https://wcwbyqrxocjgykwonmoo.supabase.co";
-    const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indjd2J5cXJ4b2NqZ3lrd29ubW9vIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzEwOTIwNjAsImV4cCI6MjA4NjY2ODA2MH0.Pthqfu4N393tb0Mv6uuRUeHWevCU03gOHF1vwsPgWSk";
+    const SUPABASE_KEY = "YOUR_ANON_KEY_HERE"; // ganti pakai anon key milikmu
+    const client = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    const gallery = document.getElementById("gallery");
+    const statusBox = document.getElementById("statusBox");
 
-    const gallery = document.getElementById('gallery');
-    const statusBox = document.getElementById('status');
+    const lightbox = document.getElementById("lightbox");
+    const lbImage = document.getElementById("lbImage");
+    const lbTitle = document.getElementById("lbTitle");
+    const lbDesc = document.getElementById("lbDesc");
+    const lbDate = document.getElementById("lbDate");
+    const lbClose = document.getElementById("lbClose");
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
 
-    const viewer = document.getElementById('viewer');
-    const viewerImage = document.getElementById('viewerImage');
-    const viewerTitle = document.getElementById('viewerTitle');
-    const viewerDesc = document.getElementById('viewerDesc');
-    const viewerDate = document.getElementById('viewerDate');
-
-    const closeViewer = document.getElementById('closeViewer');
-    const prevBtn = document.getElementById('prevBtn');
-    const nextBtn = document.getElementById('nextBtn');
-
-    let items = [];
+    let images = [];
     let currentIndex = 0;
 
     function formatDate(dateString) {
       const date = new Date(dateString);
-      return date.toLocaleDateString('id-ID', {
-        day: '2-digit',
-        month: 'long',
-        year: 'numeric'
+      return date.toLocaleString("id-ID", {
+        day: "2-digit",
+        month: "long",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit"
       });
     }
 
     async function loadGallery() {
-      statusBox.textContent = 'Memuat galeri...';
-      gallery.innerHTML = '';
+      statusBox.innerHTML = "";
+      gallery.innerHTML = "";
 
       const { data, error } = await client
-        .from('gallery')
-        .select('*')
-        .order('created_at', { ascending: false });
+        .from("gallery_images")
+        .select("*")
+        .order("uploaded_at", { ascending: false });
 
       if (error) {
-        console.error(error);
-        statusBox.innerHTML = 'Gagal memuat galeri. Cek tabel <b>gallery</b>, policy, atau data.';
+        statusBox.innerHTML = `<div class="error">Gagal memuat galeri: ${error.message}</div>`;
         return;
       }
 
-      items = data || [];
+      images = data || [];
 
-      if (items.length === 0) {
-        statusBox.textContent = 'Belum ada gambar di galeri.';
+      if (!images.length) {
+        statusBox.innerHTML = `<div class="empty">Belum ada gambar di galeri.</div>`;
         return;
       }
 
-      statusBox.textContent = `Berhasil memuat ${items.length} gambar.`;
+      images.forEach((item, index) => {
+        const imageUrl = `${SUPABASE_URL}/storage/v1/object/public/uploads/${item.file_name}`;
 
-      items.forEach((item, idx) => {
-        const card = document.createElement('div');
-        card.className = 'card';
+        const card = document.createElement("div");
+        card.className = "card";
         card.tabIndex = 0;
-
         card.innerHTML = `
-          <img src="${item.image_url}" alt="${escapeHtml(item.title)}" oncontextmenu="return false;" draggable="false">
-          <div class="card-body">
-            <div class="card-title">${escapeHtml(item.title)}</div>
-            <div class="card-desc">${escapeHtml(item.description || 'Tanpa deskripsi')}</div>
-            <div class="card-date">Upload: ${formatDate(item.created_at)}</div>
+          <img src="${imageUrl}" alt="${escapeHtml(item.title)}" loading="lazy" draggable="false">
+          <div class="card-overlay">
+            <p class="card-title">${escapeHtml(item.title)}</p>
+            <div class="card-date">${formatDate(item.uploaded_at)}</div>
           </div>
         `;
 
-        card.addEventListener('click', () => openViewer(idx));
-        card.addEventListener('keydown', (e) => {
-          if (e.key === 'Enter') openViewer(idx);
+        card.addEventListener("click", () => openLightbox(index));
+        card.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            openLightbox(index);
+          }
         });
 
         gallery.appendChild(card);
       });
     }
 
-    function openViewer(index) {
+    function openLightbox(index) {
       currentIndex = index;
-      renderViewer();
-      viewer.classList.add('active');
-      document.body.style.overflow = 'hidden';
+      renderLightbox();
+      lightbox.classList.add("visible");
+      document.body.style.overflow = "hidden";
+      lbClose.focus();
     }
 
-    function closeViewerModal() {
-      viewer.classList.remove('active');
-      document.body.style.overflow = '';
-      viewerImage.src = '';
-    }
-
-    function renderViewer() {
-      const item = items[currentIndex];
+    function renderLightbox() {
+      const item = images[currentIndex];
       if (!item) return;
 
-      viewerImage.src = item.image_url;
-      viewerImage.alt = item.title;
-      viewerTitle.textContent = item.title;
-      viewerDesc.textContent = item.description || 'Tidak ada deskripsi.';
-      viewerDate.textContent = 'Tanggal upload: ' + formatDate(item.created_at);
+      const imageUrl = `${SUPABASE_URL}/storage/v1/object/public/uploads/${item.file_name}`;
+
+      lbImage.src = imageUrl;
+      lbImage.alt = item.title || "Gambar";
+      lbTitle.textContent = item.title || "Tanpa Judul";
+      lbDesc.textContent = item.description?.trim() ? item.description : "Tidak ada deskripsi.";
+      lbDate.textContent = "Tanggal upload: " + formatDate(item.uploaded_at);
     }
 
-    function showNext() {
-      if (items.length === 0) return;
-      currentIndex = (currentIndex + 1) % items.length;
-      renderViewer();
+    function closeLightbox() {
+      lightbox.classList.remove("visible");
+      document.body.style.overflow = "";
+      lbImage.src = "";
     }
 
-    function showPrev() {
-      if (items.length === 0) return;
-      currentIndex = (currentIndex - 1 + items.length) % items.length;
-      renderViewer();
+    function nextImage() {
+      if (!images.length) return;
+      currentIndex = (currentIndex + 1) % images.length;
+      renderLightbox();
     }
 
-    function escapeHtml(str) {
-      return String(str)
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#039;');
+    function prevImage() {
+      if (!images.length) return;
+      currentIndex = (currentIndex - 1 + images.length) % images.length;
+      renderLightbox();
     }
 
-    closeViewer.addEventListener('click', closeViewerModal);
-    nextBtn.addEventListener('click', showNext);
-    prevBtn.addEventListener('click', showPrev);
+    function escapeHtml(str = "") {
+      return str
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
 
-    document.addEventListener('keydown', (e) => {
-      if (!viewer.classList.contains('active')) return;
+    // Events
+    lbClose.addEventListener("click", closeLightbox);
+    nextBtn.addEventListener("click", nextImage);
+    prevBtn.addEventListener("click", prevImage);
 
-      if (e.key === 'Escape') closeViewerModal();
-      if (e.key === 'ArrowRight') showNext();
-      if (e.key === 'ArrowLeft') showPrev();
+    lightbox.addEventListener("click", (e) => {
+      if (e.target === lightbox) closeLightbox();
     });
 
-    document.addEventListener('contextmenu', (e) => {
-      if (e.target.tagName === 'IMG') e.preventDefault();
+    document.addEventListener("keydown", (e) => {
+      if (!lightbox.classList.contains("visible")) return;
+
+      if (e.key === "Escape") closeLightbox();
+      if (e.key === "ArrowRight") nextImage();
+      if (e.key === "ArrowLeft") prevImage();
     });
 
-    document.addEventListener('dragstart', (e) => {
-      if (e.target.tagName === 'IMG') e.preventDefault();
+    // Anti right click & drag (tidak 100% anti-download)
+    document.addEventListener("contextmenu", (e) => e.preventDefault());
+    document.addEventListener("dragstart", (e) => {
+      if (e.target.tagName === "IMG") e.preventDefault();
     });
 
     loadGallery();

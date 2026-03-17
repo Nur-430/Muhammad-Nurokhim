@@ -292,9 +292,141 @@
       100% { background-position: -200% 0; }
     }
 
+    /* ── KOMPRESI PREVIEW ── */
+    .compress-preview {
+      display: none;
+      margin-top: 18px;
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid rgba(59,130,246,0.15);
+      border-radius: 16px;
+      padding: 16px;
+    }
+
+    .compress-preview.visible { display: block; }
+
+    .compress-preview h3 {
+      margin: 0 0 14px;
+      font-size: 15px;
+      font-weight: 700;
+      color: #93c5fd;
+    }
+
+    .preview-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .preview-box {
+      border-radius: 12px;
+      overflow: hidden;
+      background: #0f172a;
+      border: 1px solid rgba(255,255,255,0.07);
+    }
+
+    .preview-box img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .preview-label {
+      padding: 8px 12px;
+      font-size: 12px;
+      font-weight: 700;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .preview-label .tag {
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-weight: 700;
+    }
+
+    .tag-original { background: rgba(255,255,255,0.08); color: #94a3b8; }
+    .tag-compressed { background: rgba(59,130,246,0.18); color: #60a5fa; }
+
+    .compress-stats {
+      margin-top: 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      font-size: 13px;
+      color: #94a3b8;
+    }
+
+    .compress-stats .saved {
+      color: #4ade80;
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .compress-quality {
+      margin-top: 16px;
+    }
+
+    .quality-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .quality-header label {
+      font-size: 13px;
+      color: #dbeafe;
+      font-weight: 700;
+    }
+
+    .quality-value {
+      font-size: 13px;
+      font-weight: 800;
+      color: #60a5fa;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      accent-color: #3b82f6;
+      cursor: pointer;
+    }
+
+    .quality-hints {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    /* progress bar upload */
+    .upload-progress {
+      display: none;
+      margin-top: 12px;
+      height: 6px;
+      border-radius: 6px;
+      background: rgba(255,255,255,0.08);
+      overflow: hidden;
+    }
+
+    .upload-progress.visible { display: block; }
+
+    .upload-progress-bar {
+      height: 100%;
+      border-radius: 6px;
+      background: linear-gradient(90deg, #3b82f6, #60a5fa);
+      width: 0%;
+      transition: width 0.4s ease;
+    }
+
     @media (max-width: 640px) {
       .nav-wrap { flex-direction: column; align-items: flex-start; }
       .nav-right { gap: 2px; }
+      .preview-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -348,6 +480,46 @@
         <button class="btn btn-primary" id="uploadBtn">Upload Gambar</button>
       </div>
 
+      <!-- PREVIEW KOMPRESI -->
+      <div class="compress-preview" id="compressPreview">
+        <h3>🖼️ Preview Kompresi</h3>
+
+        <div class="compress-quality">
+          <div class="quality-header">
+            <label for="qualityRange">Kualitas Kompresi</label>
+            <span class="quality-value" id="qualityDisplay">82%</span>
+          </div>
+          <input type="range" id="qualityRange" min="50" max="95" value="82" step="1" />
+          <div class="quality-hints">
+            <span>Lebih kecil</span>
+            <span>Lebih tajam</span>
+          </div>
+        </div>
+
+        <div class="preview-grid" style="margin-top:14px;">
+          <div class="preview-box">
+            <img id="previewOriginal" src="" alt="Original" />
+            <div class="preview-label">
+              <span>Original</span>
+              <span class="tag tag-original" id="sizeOriginal">—</span>
+            </div>
+          </div>
+          <div class="preview-box">
+            <img id="previewCompressed" src="" alt="Compressed" />
+            <div class="preview-label">
+              <span>Terkompresi</span>
+              <span class="tag tag-compressed" id="sizeCompressed">—</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="compress-stats" id="compressStats"></div>
+      </div>
+
+      <div class="upload-progress" id="uploadProgress">
+        <div class="upload-progress-bar" id="uploadProgressBar"></div>
+      </div>
+
       <div class="status" id="uploadStatus"></div>
     </section>
 
@@ -387,6 +559,18 @@
     const adminSkeleton = document.getElementById("adminSkeleton");
     const manageStatus  = document.getElementById("manageStatus");
 
+    // Kompresi
+    const compressPreview    = document.getElementById("compressPreview");
+    const qualityRange       = document.getElementById("qualityRange");
+    const qualityDisplay     = document.getElementById("qualityDisplay");
+    const previewOriginal    = document.getElementById("previewOriginal");
+    const previewCompressed  = document.getElementById("previewCompressed");
+    const sizeOriginal       = document.getElementById("sizeOriginal");
+    const sizeCompressed     = document.getElementById("sizeCompressed");
+    const compressStats      = document.getElementById("compressStats");
+    const uploadProgress     = document.getElementById("uploadProgress");
+    const uploadProgressBar  = document.getElementById("uploadProgressBar");
+
     let currentUser = null;
 
     function formatDate(dateString) {
@@ -408,16 +592,175 @@
       uploadStatus.className = "status " + type;
     }
 
-    function makeFileName(file) {
-      const ext = file.name.split(".").pop();
-      const safeBase = (imageTitle.value || "gambar")
+    function formatBytes(bytes) {
+      if (bytes < 1024) return bytes + " B";
+      if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + " KB";
+      return (bytes / (1024 * 1024)).toFixed(2) + " MB";
+    }
+
+    function makeFileName(title) {
+      const safeBase = (title || "gambar")
         .toLowerCase()
         .replace(/[^a-z0-9]+/g, "-")
         .replace(/^-+|-+$/g, "");
-      return `${Date.now()}-${safeBase}.${ext}`;
+      return `${Date.now()}-${safeBase}.jpg`;
     }
 
-    // ── Bug Fix #1 & #2: Validasi admin via database, bukan email hardcoded ──
+    // ── KOMPRESI via Canvas API ──
+    function compressImage(file, quality) {
+      return new Promise((resolve) => {
+        const MAX_DIM = 2048; // max lebar/tinggi pixel
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const img = new Image();
+          img.onload = () => {
+            let { width, height } = img;
+
+            // Scale down jika melebihi MAX_DIM
+            if (width > MAX_DIM || height > MAX_DIM) {
+              const ratio = Math.min(MAX_DIM / width, MAX_DIM / height);
+              width  = Math.round(width  * ratio);
+              height = Math.round(height * ratio);
+            }
+
+            const canvas = document.createElement("canvas");
+            canvas.width  = width;
+            canvas.height = height;
+            const ctx = canvas.getContext("2d");
+            ctx.drawImage(img, 0, 0, width, height);
+
+            canvas.toBlob(
+              (blob) => resolve(blob),
+              "image/jpeg",
+              quality / 100
+            );
+          };
+          img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    // ── Update preview saat file dipilih atau slider digeser ──
+    let originalFile = null;
+
+    async function updatePreview() {
+      if (!originalFile) return;
+
+      const quality  = parseInt(qualityRange.value);
+      const compressed = await compressImage(originalFile, quality);
+
+      const origUrl = URL.createObjectURL(originalFile);
+      const compUrl = URL.createObjectURL(compressed);
+
+      previewOriginal.src    = origUrl;
+      previewCompressed.src  = compUrl;
+      sizeOriginal.textContent   = formatBytes(originalFile.size);
+      sizeCompressed.textContent = formatBytes(compressed.size);
+
+      const saved   = originalFile.size - compressed.size;
+      const pct     = ((saved / originalFile.size) * 100).toFixed(1);
+      const sign    = saved >= 0 ? "-" : "+";
+      const absAmt  = formatBytes(Math.abs(saved));
+
+      compressStats.innerHTML = saved > 0
+        ? `Hemat <span class="saved">${sign}${absAmt} (${pct}%)</span> dibanding original`
+        : `Ukuran bertambah <span style="color:#f87171">+${absAmt}</span> — coba turunkan kualitas`;
+
+      compressPreview.classList.add("visible");
+    }
+
+    imageFile.addEventListener("change", () => {
+      const file = imageFile.files[0];
+      if (!file) return;
+      originalFile = file;
+      updatePreview();
+    });
+
+    qualityRange.addEventListener("input", () => {
+      qualityDisplay.textContent = qualityRange.value + "%";
+      updatePreview();
+    });
+
+    async function uploadImage() {
+      const file  = originalFile;
+      const title = imageTitle.value.trim();
+      const desc  = imageDesc.value.trim();
+
+      if (!file)  { setUploadStatus("Pilih file gambar dulu.", "error"); return; }
+      if (!title) { setUploadStatus("Judul wajib diisi.", "error"); return; }
+
+      uploadBtn.disabled = true;
+      setUploadStatus("Mengompresi gambar...");
+
+      // Kompresi sebelum upload
+      const quality    = parseInt(qualityRange.value);
+      const compressed = await compressImage(file, quality);
+
+      // Progress bar animasi
+      uploadProgress.classList.add("visible");
+      uploadProgressBar.style.width = "30%";
+      setUploadStatus("Sedang upload...");
+
+      const fileName = makeFileName(title);
+
+      const { error: storageError } = await client.storage
+        .from("uploads")
+        .upload(fileName, compressed, {
+          cacheControl: "3600",
+          upsert: false,
+          contentType: "image/jpeg"
+        });
+
+      uploadProgressBar.style.width = "70%";
+
+      if (storageError) {
+        setUploadStatus("Upload gagal: " + storageError.message, "error");
+        uploadBtn.disabled = false;
+        uploadProgress.classList.remove("visible");
+        uploadProgressBar.style.width = "0%";
+        return;
+      }
+
+      const { error: dbError } = await client
+        .from("gallery_images")
+        .insert([{ file_name: fileName, title, description: desc || null }]);
+
+      uploadProgressBar.style.width = "100%";
+
+      if (dbError) {
+        setUploadStatus("Gagal simpan data: " + dbError.message, "error");
+        uploadBtn.disabled = false;
+        setTimeout(() => {
+          uploadProgress.classList.remove("visible");
+          uploadProgressBar.style.width = "0%";
+        }, 600);
+        return;
+      }
+
+      const origSize = formatBytes(file.size);
+      const compSize = formatBytes(compressed.size);
+      const savedPct = (((file.size - compressed.size) / file.size) * 100).toFixed(1);
+
+      setUploadStatus(
+        `✅ Upload berhasil! ${origSize} → ${compSize} (hemat ${savedPct}%)`,
+        "success"
+      );
+
+      imageFile.value  = "";
+      imageTitle.value = "";
+      imageDesc.value  = "";
+      originalFile     = null;
+      compressPreview.classList.remove("visible");
+
+      setTimeout(() => {
+        uploadProgress.classList.remove("visible");
+        uploadProgressBar.style.width = "0%";
+      }, 800);
+
+      uploadBtn.disabled = false;
+      loadAdminGallery();
+    }
     async function requireAdmin() {
       const { data, error } = await client.auth.getSession();
 
@@ -453,47 +796,6 @@
     async function logout() {
       await client.auth.signOut();
       window.location.href = "admin-login.html";
-    }
-
-    async function uploadImage() {
-      const file  = imageFile.files[0];
-      const title = imageTitle.value.trim();
-      const desc  = imageDesc.value.trim();
-
-      if (!file) { setUploadStatus("Pilih file gambar dulu.", "error"); return; }
-      if (!title) { setUploadStatus("Judul wajib diisi.", "error"); return; }
-
-      uploadBtn.disabled = true;
-      setUploadStatus("Sedang upload...");
-
-      const fileName = makeFileName(file);
-
-      const { error: storageError } = await client.storage
-        .from("uploads")
-        .upload(fileName, file, { cacheControl: "3600", upsert: false });
-
-      if (storageError) {
-        setUploadStatus("Upload gagal: " + storageError.message, "error");
-        uploadBtn.disabled = false;
-        return;
-      }
-
-      const { error: dbError } = await client
-        .from("gallery_images")
-        .insert([{ file_name: fileName, title, description: desc || null }]);
-
-      if (dbError) {
-        setUploadStatus("Gagal simpan data: " + dbError.message, "error");
-        uploadBtn.disabled = false;
-        return;
-      }
-
-      setUploadStatus("Upload berhasil!", "success");
-      imageFile.value = "";
-      imageTitle.value = "";
-      imageDesc.value = "";
-      uploadBtn.disabled = false;
-      loadAdminGallery();
     }
 
     async function loadAdminGallery() {

@@ -4,6 +4,10 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Muhammad Nurokhim — Portfolio</title>
+  <meta name="description" content="Portofolio pribadi Muhammad Nurokhim — developer web muda yang membangun project web, galeri visual, dan karya digital dengan tampilan modern dan responsif." />
+  <meta property="og:title" content="Muhammad Nurokhim — Portfolio" />
+  <meta property="og:description" content="Portofolio pribadi Muhammad Nurokhim — developer web muda yang membangun project web dan galeri visual." />
+  <meta property="og:type" content="website" />
   <style>
     :root {
       --bg: #0b1220;
@@ -19,13 +23,9 @@
       --maxw: 1200px;
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
-    html {
-      scroll-behavior: smooth;
-    }
+    html { scroll-behavior: smooth; }
 
     body {
       margin: 0;
@@ -39,12 +39,9 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    a {
-      text-decoration: none;
-      color: inherit;
-    }
+    a { text-decoration: none; color: inherit; }
 
-    /* NAVBAR */
+    /* ── NAVBAR ── */
     nav {
       position: sticky;
       top: 0;
@@ -57,7 +54,7 @@
     .nav-wrap {
       max-width: var(--maxw);
       margin: 0 auto;
-      padding: 16px 20px;
+      padding: 14px 20px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -65,39 +62,43 @@
     }
 
     .brand {
-      font-size: 1.1rem;
+      font-size: 1.05rem;
       font-weight: 800;
       color: #93c5fd;
       letter-spacing: 0.3px;
+      white-space: nowrap;
     }
 
     .nav-links {
       display: flex;
-      gap: 18px;
+      gap: 4px;
       flex-wrap: wrap;
+      align-items: center;
     }
 
     .nav-links a {
       color: var(--muted);
       font-weight: 600;
-      font-size: 0.95rem;
+      font-size: 0.9rem;
+      padding: 7px 13px;
+      border-radius: 10px;
       transition: 0.2s ease;
     }
 
-    .nav-links a:hover {
+    .nav-links a:hover,
+    .nav-links a.active {
       color: #bfdbfe;
+      background: rgba(59,130,246,0.12);
     }
 
-    /* LAYOUT */
+    /* ── LAYOUT ── */
     .container {
       max-width: var(--maxw);
       margin: 0 auto;
-      padding: 28px 20px 60px;
+      padding: 28px 20px 80px;
     }
 
-    .section {
-      margin-top: 36px;
-    }
+    .section { margin-top: 36px; }
 
     .section-title {
       font-size: 1.55rem;
@@ -113,7 +114,7 @@
       box-shadow: var(--shadow);
     }
 
-    /* HERO */
+    /* ── HERO ── */
     .hero {
       display: flex;
       align-items: flex-start;
@@ -128,8 +129,8 @@
       overflow: hidden;
       flex-shrink: 0;
       background: #1e293b;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-      border: 3px solid rgba(30, 41, 59, 0.9);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+      border: 3px solid rgba(30,41,59,0.9);
     }
 
     .profile-photo img {
@@ -187,10 +188,8 @@
       color: #f8fafc;
     }
 
-    /* PROJECT PREVIEW */
-    .project-card {
-      overflow: hidden;
-    }
+    /* ── PROJECT ── */
+    .project-card { overflow: hidden; }
 
     .project-header {
       padding: 16px 18px;
@@ -228,27 +227,9 @@
       white-space: nowrap;
     }
 
-    .project-link:hover {
-      text-decoration: underline;
-      color: #93c5fd;
-    }
+    .project-link:hover { text-decoration: underline; color: #93c5fd; }
 
-    .project-body {
-      padding: 20px;
-    }
-
-    .project-name {
-      margin: 0 0 8px;
-      font-size: 1.2rem;
-      font-weight: 800;
-      color: #f8fafc;
-    }
-
-    .project-desc {
-      margin: 0 0 16px;
-      color: var(--muted);
-      font-size: 0.98rem;
-    }
+    .project-body { padding: 20px; }
 
     .iframe-wrap {
       position: relative;
@@ -269,18 +250,15 @@
       background: #ffffff;
     }
 
-    /* EDUCATION */
-    .edu-list {
-      display: grid;
-      gap: 14px;
-    }
+    /* ── EDUCATION ── */
+    .edu-list { display: grid; gap: 14px; }
 
     .edu-item {
       padding: 16px 18px;
       border-radius: 16px;
       background: linear-gradient(180deg, #111827 0%, #0f172a 100%);
-      border: 1px solid rgba(59, 130, 246, 0.10);
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
+      border: 1px solid rgba(59,130,246,0.10);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.18);
     }
 
     .edu-item strong {
@@ -290,12 +268,9 @@
       margin-bottom: 4px;
     }
 
-    .edu-item span {
-      color: var(--muted);
-      font-size: 0.95rem;
-    }
+    .edu-item span { color: var(--muted); font-size: 0.95rem; }
 
-    /* FOOTER */
+    /* ── FOOTER ── */
     footer {
       margin-top: 40px;
       text-align: center;
@@ -304,7 +279,7 @@
       padding: 24px 10px 8px;
     }
 
-    /* BUTTON */
+    /* ── BUTTON ── */
     .btn {
       display: inline-flex;
       align-items: center;
@@ -319,12 +294,10 @@
       font-size: 0.95rem;
       cursor: pointer;
       transition: transform 0.2s ease, box-shadow 0.2s ease;
-      box-shadow: 0 8px 18px rgba(37, 99, 235, 0.25);
+      box-shadow: 0 8px 18px rgba(37,99,235,0.25);
     }
 
-    .btn:hover {
-      transform: translateY(-2px);
-    }
+    .btn:hover { transform: translateY(-2px); }
 
     .hero-actions {
       margin-top: 18px;
@@ -333,62 +306,53 @@
       gap: 12px;
     }
 
-    /* SVG ICON */
-    .icon {
-      width: 20px;
-      height: 20px;
-      flex-shrink: 0;
+    /* ── ICON ── */
+    .icon { width: 20px; height: 20px; flex-shrink: 0; }
+    .icon-sm { width: 14px; height: 14px; flex-shrink: 0; }
+
+    /* ── BACK TO TOP ── */
+    #backToTop {
+      position: fixed;
+      bottom: 28px;
+      right: 24px;
+      z-index: 200;
+      width: 46px;
+      height: 46px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 20px rgba(37,99,235,0.35);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease, transform 0.3s ease;
     }
 
-    .icon-sm {
-      width: 14px;
-      height: 14px;
-      flex-shrink: 0;
+    #backToTop.visible {
+      opacity: 1;
+      pointer-events: auto;
     }
 
-    /* RESPONSIVE */
+    #backToTop:hover { transform: translateY(-3px); }
+
+    /* ── RESPONSIVE ── */
     @media (max-width: 900px) {
-      .hero {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      .profile-photo {
-        width: 160px;
-      }
-
-      .iframe-wrap {
-        min-height: 380px;
-      }
+      .hero { flex-direction: column; align-items: flex-start; }
+      .profile-photo { width: 160px; }
+      .iframe-wrap { min-height: 380px; }
     }
 
     @media (max-width: 640px) {
-      .nav-wrap {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      .nav-links {
-        gap: 14px;
-      }
-
-      .hero {
-        padding: 20px;
-        gap: 18px;
-      }
-
-      .profile-photo {
-        width: 140px;
-      }
-
-      .project-header {
-        align-items: flex-start;
-      }
-
-      .iframe-wrap {
-        min-height: 320px;
-        height: 55vh;
-      }
+      .nav-wrap { flex-direction: column; align-items: flex-start; }
+      .nav-links { gap: 2px; }
+      .hero { padding: 20px; gap: 18px; }
+      .profile-photo { width: 140px; }
+      .project-header { align-items: flex-start; }
+      .iframe-wrap { min-height: 320px; height: 55vh; }
     }
   </style>
 </head>
@@ -399,7 +363,7 @@
     <div class="nav-wrap">
       <div class="brand">Muhammad Nurokhim</div>
       <div class="nav-links">
-        <a href="#about">Tentang</a>
+        <a href="#about" class="active">Tentang</a>
         <a href="#project">Project</a>
         <a href="#education">Pendidikan</a>
         <a href="galeri.html">Galeri</a>
@@ -433,7 +397,7 @@
           </div>
           <div class="info-box">
             <div class="info-label">Fokus</div>
-            <div class="info-value">Web Portfolio & Galeri</div>
+            <div class="info-value">Web Portfolio &amp; Galeri</div>
           </div>
         </div>
 
@@ -465,7 +429,6 @@
         </div>
 
         <div class="project-body">
-
           <div class="iframe-wrap">
             <iframe
               src="https://unknown-novel.pages.dev"
@@ -488,12 +451,10 @@
           <strong>SD Negeri Sukoreno</strong>
           <span>Pendidikan dasar</span>
         </div>
-
         <div class="edu-item">
           <strong>SMP Negeri 1 Sentolo</strong>
           <span>Pendidikan menengah pertama</span>
         </div>
-
         <div class="edu-item">
           <strong>SMK Negeri 2 Pengasih</strong>
           <span>Pendidikan kejuruan</span>
@@ -506,25 +467,51 @@
     </footer>
   </main>
 
+  <!-- BACK TO TOP -->
+  <button id="backToTop" aria-label="Kembali ke atas" title="Kembali ke atas">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M18 15l-6-6-6 6"/>
+    </svg>
+  </button>
+
   <script>
-    // Umur otomatis dari tanggal lahir: 11 Juli 2007
+    // Umur otomatis
     function calculateAge(birthDate) {
       const today = new Date();
       let age = today.getFullYear() - birthDate.getFullYear();
       const monthDiff = today.getMonth() - birthDate.getMonth();
       const dayDiff = today.getDate() - birthDate.getDate();
-
-      if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
-        age--;
-      }
+      if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) age--;
       return age;
     }
 
-    const birthDate = new Date(2007, 6, 11); // bulan dimulai dari 0, jadi Juli = 6
+    const birthDate = new Date(2007, 6, 11);
     document.getElementById('ageText').textContent = calculateAge(birthDate) + " tahun";
 
     // Tahun footer otomatis
     document.getElementById('yearNow').textContent = new Date().getFullYear();
+
+    // Back to top
+    const backToTop = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      backToTop.classList.toggle('visible', window.scrollY > 300);
+    });
+    backToTop.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // Active nav link saat scroll
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav-links a');
+    window.addEventListener('scroll', () => {
+      let current = '';
+      sections.forEach(s => {
+        if (window.scrollY >= s.offsetTop - 80) current = s.id;
+      });
+      navLinks.forEach(a => {
+        a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+      });
+    });
   </script>
 </body>
 </html>

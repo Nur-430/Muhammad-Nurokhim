@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Login Admin - Nurokhim</title>
+  <title>Login Admin — Muhammad Nurokhim</title>
+  <meta name="robots" content="noindex, nofollow" />
   <style>
     :root {
       --bg: #0b1220;
@@ -43,18 +44,9 @@
       padding: 28px;
     }
 
-    h1 {
-      margin: 0 0 8px;
-      text-align: center;
-      font-size: 32px;
-      font-weight: 800;
-    }
+    h1 { margin: 0 0 8px; text-align: center; font-size: 32px; font-weight: 800; }
 
-    p.sub {
-      margin: 0 0 24px;
-      text-align: center;
-      color: var(--muted);
-    }
+    p.sub { margin: 0 0 24px; text-align: center; color: var(--muted); }
 
     .field {
       display: flex;
@@ -63,10 +55,7 @@
       margin-bottom: 16px;
     }
 
-    label {
-      font-weight: 700;
-      color: #dbeafe;
-    }
+    label { font-weight: 700; color: #dbeafe; }
 
     input {
       width: 100%;
@@ -77,7 +66,10 @@
       color: #fff;
       outline: none;
       font-size: 15px;
+      transition: border-color 0.2s;
     }
+
+    input:focus { border-color: rgba(59,130,246,0.45); }
 
     .btn {
       width: 100%;
@@ -92,9 +84,8 @@
       transition: .2s;
     }
 
-    .btn:hover {
-      transform: translateY(-2px);
-    }
+    .btn:hover { transform: translateY(-2px); }
+    .btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
 
     .status {
       margin-top: 14px;
@@ -104,10 +95,10 @@
       min-height: 20px;
     }
 
-    .links {
-      margin-top: 18px;
-      text-align: center;
-    }
+    .status.error { color: #fca5a5; }
+    .status.success { color: #86efac; }
+
+    .links { margin-top: 18px; text-align: center; }
 
     .links a {
       color: #93c5fd;
@@ -115,9 +106,7 @@
       font-weight: 600;
     }
 
-    .links a:hover {
-      text-decoration: underline;
-    }
+    .links a:hover { text-decoration: underline; }
   </style>
 </head>
 <body>
@@ -127,12 +116,12 @@
 
     <div class="field">
       <label for="email">Email</label>
-      <input type="email" id="email" placeholder="Masukkan email admin">
+      <input type="email" id="email" placeholder="Masukkan email admin" autocomplete="email" />
     </div>
 
     <div class="field">
       <label for="password">Password</label>
-      <input type="password" id="password" placeholder="Masukkan password">
+      <input type="password" id="password" placeholder="Masukkan password" autocomplete="current-password" />
     </div>
 
     <button class="btn" id="loginBtn">Login</button>
@@ -148,24 +137,36 @@
   <script>
     const SUPABASE_URL = "https://wcwbyqrxocjgykwonmoo.supabase.co";
     const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indjd2J5cXJ4b2NqZ3lrd29ubW9vIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzEwOTIwNjAsImV4cCI6MjA4NjY2ODA2MH0.Pthqfu4N393tb0Mv6uuRUeHWevCU03gOHF1vwsPgWSk";
-    const ADMIN_EMAIL = "nurokhim430@gmail.com"; // contoh: adminkamu@gmail.com
+
+    // ── Bug Fix #1: ADMIN_EMAIL dihapus dari client ──
+    // Validasi admin dilakukan di server via Supabase RLS.
+    // Di sini kita hanya autentikasi, lalu admin.html
+    // memverifikasi role lewat database, BUKAN email hardcoded.
 
     const client = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    const emailInput = document.getElementById("email");
+    const emailInput  = document.getElementById("email");
     const passwordInput = document.getElementById("password");
-    const loginBtn = document.getElementById("loginBtn");
-    const statusEl = document.getElementById("status");
+    const loginBtn    = document.getElementById("loginBtn");
+    const statusEl    = document.getElementById("status");
+
+    function setStatus(msg, type = "") {
+      statusEl.textContent = msg;
+      statusEl.className = "status " + type;
+    }
 
     async function checkSession() {
-      const { data, error } = await client.auth.getSession();
-      if (error) return;
+      const { data } = await client.auth.getSession();
+      if (!data.session) return;
 
-      const session = data.session;
-      if (!session) return;
+      // Cek apakah user ini memiliki role admin di database
+      const { data: profile } = await client
+        .from("admin_users")
+        .select("id")
+        .eq("user_id", data.session.user.id)
+        .maybeSingle();
 
-      const userEmail = session.user?.email || "";
-      if (userEmail.toLowerCase() === ADMIN_EMAIL.toLowerCase()) {
+      if (profile) {
         window.location.href = "admin.html";
       } else {
         await client.auth.signOut();
@@ -173,39 +174,40 @@
     }
 
     async function login() {
-      const email = emailInput.value.trim();
+      const email    = emailInput.value.trim();
       const password = passwordInput.value.trim();
 
       if (!email || !password) {
-        statusEl.textContent = "Email dan password wajib diisi.";
+        setStatus("Email dan password wajib diisi.", "error");
         return;
       }
 
       loginBtn.disabled = true;
-      statusEl.textContent = "Sedang login...";
+      setStatus("Sedang login...");
 
-      const { data, error } = await client.auth.signInWithPassword({
-        email,
-        password
-      });
+      const { data, error } = await client.auth.signInWithPassword({ email, password });
 
       if (error) {
-        statusEl.textContent = "Login gagal: " + error.message;
+        setStatus("Login gagal: " + error.message, "error");
         loginBtn.disabled = false;
         return;
       }
 
-      const userEmail = data.user?.email || "";
+      // ── Bug Fix #1: cek role admin dari tabel database, bukan email hardcoded ──
+      const { data: profile } = await client
+        .from("admin_users")
+        .select("id")
+        .eq("user_id", data.user.id)
+        .maybeSingle();
 
-      // Batasi hanya email admin tertentu
-      if (userEmail.toLowerCase() !== ADMIN_EMAIL.toLowerCase()) {
+      if (!profile) {
         await client.auth.signOut();
-        statusEl.textContent = "Akses ditolak. Bukan akun admin.";
+        setStatus("Akses ditolak. Bukan akun admin.", "error");
         loginBtn.disabled = false;
         return;
       }
 
-      statusEl.textContent = "Login berhasil. Mengalihkan...";
+      setStatus("Login berhasil. Mengalihkan...", "success");
       window.location.href = "admin.html";
     }
 

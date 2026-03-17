@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin Galeri - Nurokhim</title>
+  <title>Admin Galeri — Muhammad Nurokhim</title>
+  <meta name="robots" content="noindex, nofollow" />
   <style>
     :root {
       --bg: #0b1220;
@@ -22,6 +23,7 @@
 
     * { box-sizing: border-box; }
 
+    /* ── Bug Fix #2: body hidden default, tampil hanya setelah auth selesai ── */
     body {
       margin: 0;
       font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
@@ -33,56 +35,128 @@
       min-height: 100vh;
     }
 
+    /* ── LOADING OVERLAY (Bug Fix #2) ── */
+    #authOverlay {
+      position: fixed;
+      inset: 0;
+      background: #0b1220;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 18px;
+      z-index: 9999;
+    }
+
+    #authOverlay.hidden { display: none; }
+
+    .spinner {
+      width: 42px;
+      height: 42px;
+      border: 3px solid rgba(59,130,246,0.2);
+      border-top-color: #3b82f6;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .auth-text { color: var(--muted); font-size: 0.95rem; }
+
+    /* ── NAVBAR ── */
     nav {
       position: sticky;
       top: 0;
-      z-index: 20;
+      z-index: 100;
+      backdrop-filter: blur(14px);
+      background: rgba(15, 23, 42, 0.82);
+      border-bottom: 1px solid rgba(59, 130, 246, 0.12);
+    }
+
+    .nav-wrap {
+      max-width: var(--maxw);
+      margin: 0 auto;
+      padding: 14px 20px;
       display: flex;
-      justify-content: center;
+      justify-content: space-between;
+      align-items: center;
       gap: 16px;
-      padding: 16px 20px;
-      background: rgba(11, 18, 32, 0.78);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
+    }
+
+    .brand {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: #93c5fd;
+      letter-spacing: 0.3px;
+      white-space: nowrap;
+      text-decoration: none;
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 4px;
       flex-wrap: wrap;
     }
 
-    nav a, nav button {
+    .nav-links {
+      display: flex;
+      gap: 4px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .nav-links a {
       text-decoration: none;
       color: var(--muted);
       font-weight: 600;
-      padding: 10px 14px;
-      border-radius: 12px;
+      font-size: 0.9rem;
+      padding: 7px 13px;
+      border-radius: 10px;
+      transition: 0.2s;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: #bfdbfe;
+      background: rgba(59,130,246,0.12);
+    }
+
+    .nav-divider {
+      width: 1px;
+      height: 20px;
+      background: rgba(255,255,255,0.1);
+      margin: 0 4px;
+    }
+
+    .btn-logout {
+      text-decoration: none;
+      color: #fca5a5;
+      font-weight: 600;
+      font-size: 0.9rem;
+      padding: 7px 13px;
+      border-radius: 10px;
       background: transparent;
       border: none;
       cursor: pointer;
-      font-size: 14px;
+      transition: 0.2s;
     }
 
-    nav a:hover, nav button:hover,
-    nav a.active {
+    .btn-logout:hover {
       color: #fff;
-      background: rgba(59,130,246,0.14);
+      background: rgba(239,68,68,0.15);
     }
 
+    /* ── LAYOUT ── */
     .container {
       max-width: var(--maxw);
       margin: 0 auto;
       padding: 30px 20px 60px;
     }
 
-    h1 {
-      text-align: center;
-      margin: 0 0 8px;
-      font-size: clamp(28px, 4vw, 42px);
-      font-weight: 800;
-    }
+    h1 { text-align: center; margin: 0 0 8px; font-size: clamp(28px, 4vw, 42px); font-weight: 800; }
 
-    .admin-email {
-      text-align: center;
-      color: var(--muted);
-      margin-bottom: 24px;
-    }
+    .admin-email { text-align: center; color: var(--muted); margin-bottom: 24px; }
 
     .panel {
       background: rgba(17, 24, 39, 0.92);
@@ -93,10 +167,7 @@
       margin-bottom: 24px;
     }
 
-    .panel h2 {
-      margin-top: 0;
-      font-size: 22px;
-    }
+    .panel h2 { margin-top: 0; font-size: 22px; }
 
     .grid {
       display: grid;
@@ -104,16 +175,9 @@
       grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
     }
 
-    .field {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
+    .field { display: flex; flex-direction: column; gap: 8px; }
 
-    label {
-      font-weight: 700;
-      color: #dbeafe;
-    }
+    label { font-weight: 700; color: #dbeafe; }
 
     input[type="text"],
     textarea,
@@ -125,12 +189,13 @@
       background: rgba(255,255,255,0.03);
       color: #fff;
       outline: none;
+      transition: border-color 0.2s;
     }
 
-    textarea {
-      min-height: 100px;
-      resize: vertical;
-    }
+    input[type="text"]:focus,
+    textarea:focus { border-color: rgba(59,130,246,0.45); }
+
+    textarea { min-height: 100px; resize: vertical; }
 
     .btn {
       border: none;
@@ -141,30 +206,16 @@
       transition: .2s;
     }
 
-    .btn-primary {
-      background: linear-gradient(135deg, var(--blue), var(--blue2));
-      color: white;
-    }
+    .btn:hover { transform: translateY(-2px); }
+    .btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
 
-    .btn-danger {
-      background: rgba(239,68,68,0.18);
-      color: #fff;
-    }
+    .btn-primary { background: linear-gradient(135deg, var(--blue), var(--blue2)); color: white; }
+    .btn-danger { background: rgba(239,68,68,0.18); color: #fff; }
+    .btn-secondary { background: rgba(255,255,255,0.08); color: #fff; }
 
-    .btn-secondary {
-      background: rgba(255,255,255,0.08);
-      color: #fff;
-    }
-
-    .btn:hover {
-      transform: translateY(-2px);
-    }
-
-    .status {
-      margin-top: 12px;
-      font-size: 14px;
-      color: #cbd5e1;
-    }
+    .status { margin-top: 12px; font-size: 14px; color: #cbd5e1; }
+    .status.success { color: #86efac; }
+    .status.error { color: #fca5a5; }
 
     .gallery-list {
       display: grid;
@@ -188,34 +239,15 @@
       -webkit-user-drag: none;
     }
 
-    .item-body {
-      padding: 14px;
-    }
+    .item-body { padding: 14px; }
 
-    .item-title {
-      font-size: 18px;
-      font-weight: 800;
-      margin: 0 0 6px;
-    }
+    .item-title { font-size: 18px; font-weight: 800; margin: 0 0 6px; }
 
-    .item-date {
-      font-size: 12px;
-      color: var(--muted);
-      margin-bottom: 10px;
-    }
+    .item-date { font-size: 12px; color: var(--muted); margin-bottom: 10px; }
 
-    .item-desc {
-      font-size: 14px;
-      color: #cbd5e1;
-      margin-bottom: 12px;
-      white-space: pre-wrap;
-    }
+    .item-desc { font-size: 14px; color: #cbd5e1; margin-bottom: 12px; white-space: pre-wrap; }
 
-    .item-actions {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
+    .item-actions { display: flex; gap: 10px; flex-wrap: wrap; }
 
     .edit-box {
       margin-top: 14px;
@@ -224,26 +256,72 @@
       display: none;
     }
 
-    .edit-box.active {
-      display: block;
+    .edit-box.active { display: block; }
+
+    /* ── SKELETON loading admin gallery ── */
+    .skeleton-item {
+      background: rgba(31, 41, 55, 0.9);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      overflow: hidden;
     }
 
-    .loading {
-      text-align: center;
-      padding: 40px 20px;
-      color: var(--muted);
+    .skeleton-img-sm {
+      width: 100%;
+      height: 220px;
+      background: linear-gradient(90deg, #1e293b 25%, #263347 50%, #1e293b 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+    }
+
+    .skeleton-body { padding: 14px; }
+
+    .skeleton-line {
+      height: 14px;
+      border-radius: 6px;
+      background: linear-gradient(90deg, #1e293b 25%, #263347 50%, #1e293b 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+      margin-bottom: 10px;
+    }
+
+    .skeleton-line.short { width: 50%; }
+
+    @keyframes shimmer {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    @media (max-width: 640px) {
+      .nav-wrap { flex-direction: column; align-items: flex-start; }
+      .nav-right { gap: 2px; }
     }
   </style>
 </head>
 <body>
+
+  <!-- Bug Fix #2: Overlay loading menutupi seluruh halaman saat cek auth -->
+  <div id="authOverlay">
+    <div class="spinner"></div>
+    <div class="auth-text">Memeriksa akses admin...</div>
+  </div>
+
   <nav>
-    <a href="index.html">Home</a>
-    <a href="galeri.html">Galeri</a>
-    <a href="admin.html" class="active">Admin</a>
-    <button id="logoutBtn">Logout</button>
+    <div class="nav-wrap">
+      <a href="index.html" class="brand">Muhammad Nurokhim</a>
+      <div class="nav-right">
+        <div class="nav-links">
+          <a href="index.html">Home</a>
+          <a href="galeri.html">Galeri</a>
+          <a href="admin.html" class="active">Admin</a>
+        </div>
+        <div class="nav-divider"></div>
+        <button class="btn-logout" id="logoutBtn">Logout</button>
+      </div>
+    </div>
   </nav>
 
-  <main class="container" id="app" style="display:none;">
+  <main class="container" id="app" style="visibility:hidden;">
     <h1>Admin Galeri</h1>
     <div class="admin-email" id="adminEmail"></div>
 
@@ -275,54 +353,59 @@
 
     <section class="panel">
       <h2>Manajemen Gambar</h2>
-      <div class="gallery-list" id="adminGallery"></div>
+      <!-- Skeleton loader admin gallery -->
+      <div class="gallery-list" id="adminSkeleton">
+        <div class="skeleton-item"><div class="skeleton-img-sm"></div><div class="skeleton-body"><div class="skeleton-line"></div><div class="skeleton-line short"></div></div></div>
+        <div class="skeleton-item"><div class="skeleton-img-sm"></div><div class="skeleton-body"><div class="skeleton-line"></div><div class="skeleton-line short"></div></div></div>
+        <div class="skeleton-item"><div class="skeleton-img-sm"></div><div class="skeleton-body"><div class="skeleton-line"></div><div class="skeleton-line short"></div></div></div>
+      </div>
+      <div class="gallery-list" id="adminGallery" style="display:none;"></div>
       <div class="status" id="manageStatus"></div>
     </section>
   </main>
-
-  <div class="loading" id="loading">Memeriksa akses admin...</div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
     const SUPABASE_URL = "https://wcwbyqrxocjgykwonmoo.supabase.co";
     const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indjd2J5cXJ4b2NqZ3lrd29ubW9vIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzEwOTIwNjAsImV4cCI6MjA4NjY2ODA2MH0.Pthqfu4N393tb0Mv6uuRUeHWevCU03gOHF1vwsPgWSk";
-    const ADMIN_EMAIL = "nurokhim430@gmail.com"; // contoh: adminkamu@gmail.com
+
+    // ── Bug Fix #1: Tidak ada ADMIN_EMAIL di client-side ──
+    // Validasi admin sepenuhnya lewat tabel `admin_users` di Supabase.
 
     const client = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    const app = document.getElementById("app");
-    const loading = document.getElementById("loading");
-    const adminEmail = document.getElementById("adminEmail");
-    const logoutBtn = document.getElementById("logoutBtn");
-
-    const imageFile = document.getElementById("imageFile");
-    const imageTitle = document.getElementById("imageTitle");
-    const imageDesc = document.getElementById("imageDesc");
-    const uploadBtn = document.getElementById("uploadBtn");
-    const uploadStatus = document.getElementById("uploadStatus");
-    const adminGallery = document.getElementById("adminGallery");
-    const manageStatus = document.getElementById("manageStatus");
+    const authOverlay   = document.getElementById("authOverlay");
+    const app           = document.getElementById("app");
+    const adminEmail    = document.getElementById("adminEmail");
+    const logoutBtn     = document.getElementById("logoutBtn");
+    const imageFile     = document.getElementById("imageFile");
+    const imageTitle    = document.getElementById("imageTitle");
+    const imageDesc     = document.getElementById("imageDesc");
+    const uploadBtn     = document.getElementById("uploadBtn");
+    const uploadStatus  = document.getElementById("uploadStatus");
+    const adminGallery  = document.getElementById("adminGallery");
+    const adminSkeleton = document.getElementById("adminSkeleton");
+    const manageStatus  = document.getElementById("manageStatus");
 
     let currentUser = null;
 
     function formatDate(dateString) {
-      const date = new Date(dateString);
-      return date.toLocaleString("id-ID", {
-        day: "2-digit",
-        month: "long",
-        year: "numeric",
-        hour: "2-digit",
-        minute: "2-digit"
+      return new Date(dateString).toLocaleString("id-ID", {
+        day: "2-digit", month: "long", year: "numeric",
+        hour: "2-digit", minute: "2-digit"
       });
     }
 
     function escapeHtml(str = "") {
       return str
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
+        .replaceAll("&", "&amp;").replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;").replaceAll('"', "&quot;")
         .replaceAll("'", "&#039;");
+    }
+
+    function setUploadStatus(msg, type = "") {
+      uploadStatus.textContent = msg;
+      uploadStatus.className = "status " + type;
     }
 
     function makeFileName(file) {
@@ -334,6 +417,7 @@
       return `${Date.now()}-${safeBase}.${ext}`;
     }
 
+    // ── Bug Fix #1 & #2: Validasi admin via database, bukan email hardcoded ──
     async function requireAdmin() {
       const { data, error } = await client.auth.getSession();
 
@@ -343,18 +427,26 @@
       }
 
       const user = data.session.user;
-      const email = user?.email || "";
 
-      if (email.toLowerCase() !== ADMIN_EMAIL.toLowerCase()) {
+      // Cek role admin dari tabel database (server-side validation)
+      const { data: profile } = await client
+        .from("admin_users")
+        .select("id")
+        .eq("user_id", user.id)
+        .maybeSingle();
+
+      if (!profile) {
         await client.auth.signOut();
         window.location.href = "admin-login.html";
         return false;
       }
 
       currentUser = user;
-      adminEmail.textContent = "Login sebagai: " + email;
-      loading.style.display = "none";
-      app.style.display = "block";
+      adminEmail.textContent = "Login sebagai: " + user.email;
+
+      // Bug Fix #2: Sembunyikan overlay, tampilkan konten setelah auth selesai
+      authOverlay.classList.add("hidden");
+      app.style.visibility = "visible";
       return true;
     }
 
@@ -364,63 +456,49 @@
     }
 
     async function uploadImage() {
-      const file = imageFile.files[0];
+      const file  = imageFile.files[0];
       const title = imageTitle.value.trim();
-      const desc = imageDesc.value.trim();
+      const desc  = imageDesc.value.trim();
 
-      if (!file) {
-        uploadStatus.textContent = "Pilih file gambar dulu.";
-        return;
-      }
-
-      if (!title) {
-        uploadStatus.textContent = "Judul wajib diisi.";
-        return;
-      }
+      if (!file) { setUploadStatus("Pilih file gambar dulu.", "error"); return; }
+      if (!title) { setUploadStatus("Judul wajib diisi.", "error"); return; }
 
       uploadBtn.disabled = true;
-      uploadStatus.textContent = "Sedang upload...";
+      setUploadStatus("Sedang upload...");
 
       const fileName = makeFileName(file);
 
       const { error: storageError } = await client.storage
         .from("uploads")
-        .upload(fileName, file, {
-          cacheControl: "3600",
-          upsert: false
-        });
+        .upload(fileName, file, { cacheControl: "3600", upsert: false });
 
       if (storageError) {
-        uploadStatus.textContent = "Upload gagal: " + storageError.message;
+        setUploadStatus("Upload gagal: " + storageError.message, "error");
         uploadBtn.disabled = false;
         return;
       }
 
       const { error: dbError } = await client
         .from("gallery_images")
-        .insert([{
-          file_name: fileName,
-          title: title,
-          description: desc || null
-        }]);
+        .insert([{ file_name: fileName, title, description: desc || null }]);
 
       if (dbError) {
-        uploadStatus.textContent = "Gagal simpan data: " + dbError.message;
+        setUploadStatus("Gagal simpan data: " + dbError.message, "error");
         uploadBtn.disabled = false;
         return;
       }
 
-      uploadStatus.textContent = "Upload berhasil!";
+      setUploadStatus("Upload berhasil!", "success");
       imageFile.value = "";
       imageTitle.value = "";
       imageDesc.value = "";
       uploadBtn.disabled = false;
-
       loadAdminGallery();
     }
 
     async function loadAdminGallery() {
-      adminGallery.innerHTML = "";
+      adminGallery.style.display = "none";
+      adminSkeleton.style.display = "grid";
       manageStatus.textContent = "";
 
       const { data, error } = await client
@@ -428,13 +506,19 @@
         .select("*")
         .order("uploaded_at", { ascending: false });
 
+      adminSkeleton.style.display = "none";
+      adminGallery.style.display = "grid";
+      adminGallery.innerHTML = "";
+
       if (error) {
         manageStatus.textContent = "Gagal memuat data: " + error.message;
+        manageStatus.className = "status error";
         return;
       }
 
       if (!data || !data.length) {
         manageStatus.textContent = "Belum ada gambar.";
+        manageStatus.className = "status";
         return;
       }
 
@@ -445,7 +529,7 @@
         wrapper.className = "item";
 
         wrapper.innerHTML = `
-          <img src="${imageUrl}" alt="${escapeHtml(item.title)}" draggable="false">
+          <img src="${imageUrl}" alt="${escapeHtml(item.title)}" draggable="false" loading="lazy">
           <div class="item-body">
             <h3 class="item-title">${escapeHtml(item.title)}</h3>
             <div class="item-date">${formatDate(item.uploaded_at)}</div>
@@ -453,7 +537,7 @@
 
             <div class="item-actions">
               <button class="btn btn-secondary" data-edit="${item.id}">Edit</button>
-              <button class="btn btn-danger" data-delete="${item.id}" data-file="${item.file_name}">Hapus</button>
+              <button class="btn btn-danger" data-delete="${item.id}" data-file="${escapeHtml(item.file_name)}">Hapus</button>
             </div>
 
             <div class="edit-box" id="edit-box-${item.id}">
@@ -461,12 +545,10 @@
                 <label>Judul</label>
                 <input type="text" id="edit-title-${item.id}" value="${escapeHtml(item.title)}">
               </div>
-
               <div class="field" style="margin-top: 12px;">
                 <label>Deskripsi</label>
                 <textarea id="edit-desc-${item.id}">${item.description ? escapeHtml(item.description) : ""}</textarea>
               </div>
-
               <div class="item-actions" style="margin-top: 12px;">
                 <button class="btn btn-primary" data-save="${item.id}">Simpan</button>
                 <button class="btn btn-secondary" data-cancel="${item.id}">Batal</button>
@@ -484,46 +566,32 @@
     function bindAdminActions() {
       document.querySelectorAll("[data-edit]").forEach(btn => {
         btn.addEventListener("click", () => {
-          const id = btn.dataset.edit;
-          document.getElementById(`edit-box-${id}`).classList.add("active");
+          document.getElementById(`edit-box-${btn.dataset.edit}`).classList.add("active");
         });
       });
 
       document.querySelectorAll("[data-cancel]").forEach(btn => {
         btn.addEventListener("click", () => {
-          const id = btn.dataset.cancel;
-          document.getElementById(`edit-box-${id}`).classList.remove("active");
+          document.getElementById(`edit-box-${btn.dataset.cancel}`).classList.remove("active");
         });
       });
 
       document.querySelectorAll("[data-save]").forEach(btn => {
         btn.addEventListener("click", async () => {
-          const id = btn.dataset.save;
+          const id    = btn.dataset.save;
           const title = document.getElementById(`edit-title-${id}`).value.trim();
-          const desc = document.getElementById(`edit-desc-${id}`).value.trim();
+          const desc  = document.getElementById(`edit-desc-${id}`).value.trim();
 
-          if (!title) {
-            alert("Judul tidak boleh kosong.");
-            return;
-          }
+          if (!title) { alert("Judul tidak boleh kosong."); return; }
 
           btn.disabled = true;
-
           const { error } = await client
             .from("gallery_images")
-            .update({
-              title: title,
-              description: desc || null
-            })
+            .update({ title, description: desc || null })
             .eq("id", id);
 
           btn.disabled = false;
-
-          if (error) {
-            alert("Gagal update: " + error.message);
-            return;
-          }
-
+          if (error) { alert("Gagal update: " + error.message); return; }
           alert("Data berhasil diperbarui.");
           loadAdminGallery();
         });
@@ -531,29 +599,20 @@
 
       document.querySelectorAll("[data-delete]").forEach(btn => {
         btn.addEventListener("click", async () => {
-          const id = btn.dataset.delete;
+          const id       = btn.dataset.delete;
           const fileName = btn.dataset.file;
-
-          const ok = confirm("Yakin ingin menghapus gambar ini?");
-          if (!ok) return;
+          if (!confirm("Yakin ingin menghapus gambar ini?")) return;
 
           btn.disabled = true;
 
-          const { error: storageError } = await client.storage
-            .from("uploads")
-            .remove([fileName]);
-
+          const { error: storageError } = await client.storage.from("uploads").remove([fileName]);
           if (storageError) {
             alert("Gagal hapus file storage: " + storageError.message);
             btn.disabled = false;
             return;
           }
 
-          const { error: dbError } = await client
-            .from("gallery_images")
-            .delete()
-            .eq("id", id);
-
+          const { error: dbError } = await client.from("gallery_images").delete().eq("id", id);
           if (dbError) {
             alert("Gagal hapus data database: " + dbError.message);
             btn.disabled = false;
@@ -569,15 +628,11 @@
     uploadBtn.addEventListener("click", uploadImage);
 
     document.addEventListener("contextmenu", (e) => e.preventDefault());
-    document.addEventListener("dragstart", (e) => {
-      if (e.target.tagName === "IMG") e.preventDefault();
-    });
+    document.addEventListener("dragstart", (e) => { if (e.target.tagName === "IMG") e.preventDefault(); });
 
     (async function init() {
       const ok = await requireAdmin();
-      if (ok) {
-        loadAdminGallery();
-      }
+      if (ok) loadAdminGallery();
     })();
   </script>
 </body>

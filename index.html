@@ -74,6 +74,7 @@
       gap: 4px;
       flex-wrap: wrap;
       align-items: center;
+      justify-content: center;
     }
 
     .nav-links a {
@@ -339,7 +340,118 @@
 
     #backToTop:hover { transform: translateY(-3px); }
 
-    /* ── RESPONSIVE ── */
+    /* ── FOTO TERBARU GRID ── */
+    .foto-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+
+    .foto-card {
+      position: relative;
+      overflow: hidden;
+      border-radius: 14px;
+      background: rgba(17,24,39,0.92);
+      border: 1px solid rgba(255,255,255,0.08);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+      cursor: pointer;
+      transition: transform .22s ease, border-color .22s ease;
+      text-decoration: none; color: inherit; display: block;
+    }
+    .foto-card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(59,130,246,0.35);
+    }
+    .foto-card img {
+      width: 100%; height: 200px; object-fit: cover; display: block;
+      transition: transform .35s ease;
+      pointer-events: none; -webkit-user-drag: none;
+    }
+    .foto-card:hover img { transform: scale(1.04); }
+    .foto-card-overlay {
+      position: absolute; inset: auto 0 0 0; padding: 12px 14px;
+      background: linear-gradient(to top, rgba(0,0,0,.72), transparent);
+    }
+    .foto-card-title {
+      margin: 0; font-size: 0.88rem; font-weight: 700; color: #fff;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .foto-card-date { font-size: 0.75rem; color: #cbd5e1; margin-top: 3px; }
+
+    /* skeleton foto */
+    .sk-foto-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+    .sk-foto {
+      border-radius: 14px; overflow: hidden;
+      background: rgba(17,24,39,0.92); border: 1px solid rgba(255,255,255,0.08);
+    }
+    .sk-foto-img {
+      height: 200px;
+      background: linear-gradient(90deg, #1e293b 25%, #263347 50%, #1e293b 75%);
+      background-size: 200% 100%; animation: shimmer 1.5s infinite;
+    }
+    .sk-foto-body { padding: 10px 12px; }
+
+    /* ── ARTIKEL PREVIEW (wSpec) ── */
+    .wspec-list { display: flex; flex-direction: column; gap: 0; }
+
+    .wSpec-wrap {
+      display: flex; gap: 14px; align-items: flex-start;
+      padding: 16px 18px;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      cursor: pointer;
+      transition: background 0.2s;
+      border-radius: 0;
+      text-decoration: none; color: inherit;
+    }
+    .wSpec-wrap:first-child { border-radius: 18px 18px 0 0; }
+    .wSpec-wrap:last-child { border-bottom: none; border-radius: 0 0 18px 18px; }
+    .wSpec-wrap:only-child { border-radius: 18px; }
+    .wSpec-wrap:hover { background: rgba(59,130,246,0.06); }
+
+    .wSpec-img {
+      width: 90px; height: 64px; border-radius: 10px;
+      overflow: hidden; flex-shrink: 0; position: relative; background: #1e293b;
+    }
+    .wSpec-img img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+      pointer-events: none; -webkit-user-drag: none;
+    }
+
+    .wSpec-box { flex: 1; min-width: 0; }
+    .wSpec-subtitle {
+      margin: 0 0 4px; font-size: 0.78rem; color: var(--muted);
+      display: flex; align-items: center; gap: 4px;
+    }
+    .wSpec-subtitle svg { width: 11px; height: 11px; flex-shrink: 0; }
+    .wSpec-title {
+      margin: 0; font-size: 0.92rem; font-weight: 700; color: #f1f5f9;
+      line-height: 1.4;
+      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+    }
+
+    .section-footer {
+      margin-top: 14px; text-align: right;
+    }
+    .section-footer a {
+      color: #60a5fa; font-size: 0.9rem; font-weight: 700;
+      display: inline-flex; align-items: center; gap: 5px;
+    }
+    .section-footer a:hover { color: #93c5fd; text-decoration: underline; }
+    .section-footer svg { width: 14px; height: 14px; }
+
+    /* skeleton artikel di index */
+    .sk-wspec { display: flex; gap: 14px; padding: 16px 18px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+    .sk-wspec:last-child { border-bottom: none; }
+    .sk-thumb { width: 90px; height: 64px; border-radius: 10px; flex-shrink: 0; background: linear-gradient(90deg, #1e293b 25%, #263347 50%, #1e293b 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; }
+    .sk-wtext { flex: 1; }
+    .sk-wline { height: 12px; border-radius: 5px; margin-bottom: 7px; background: linear-gradient(90deg, #1e293b 25%, #263347 50%, #1e293b 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; }
+    .sk-wline.s70 { width: 70%; }
+    .sk-wline.s40 { width: 40%; }
+
+    @keyframes shimmer {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
     @media (max-width: 900px) {
       .hero { flex-direction: column; align-items: flex-start; }
       .profile-photo { width: 160px; }
@@ -347,12 +459,15 @@
     }
 
     @media (max-width: 640px) {
-      .nav-wrap { flex-direction: column; align-items: flex-start; }
-      .nav-links { gap: 2px; }
+      .nav-wrap { flex-direction: column; align-items: center; }
+      .nav-links { gap: 2px; justify-content: center; }
       .hero { padding: 20px; gap: 18px; }
       .profile-photo { width: 140px; }
       .project-header { align-items: flex-start; }
       .iframe-wrap { min-height: 320px; height: 55vh; }
+      .foto-grid, .sk-foto-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+      .foto-card img { height: 150px; }
+      .sk-foto-img { height: 150px; }
     }
   </style>
 </head>
@@ -365,8 +480,9 @@
       <div class="nav-links">
         <a href="#about" class="active">Tentang</a>
         <a href="#project">Project</a>
+        <a href="#photos">Foto</a>
+        <a href="#articles">Artikel</a>
         <a href="#education">Pendidikan</a>
-        <a href="galeri.html">Galeri</a>
       </div>
     </div>
   </nav>
@@ -399,10 +515,6 @@
             <div class="info-label">Fokus</div>
             <div class="info-value">Web Portfolio &amp; Galeri</div>
           </div>
-        </div>
-
-        <div class="hero-actions">
-          <a href="galeri.html" class="btn">Lihat Galeri</a>
         </div>
       </div>
     </section>
@@ -442,6 +554,44 @@
       </div>
     </section>
 
+    <!-- FOTO TERBARU -->
+    <section class="section" id="photos">
+      <h2 class="section-title">Foto Terbaru</h2>
+      <div id="fotoSkeleton" class="sk-foto-grid">
+        <div class="sk-foto"><div class="sk-foto-img"></div><div class="sk-foto-body"><div class="sk-line s70"></div><div class="sk-line s40" style="margin-top:5px;"></div></div></div>
+        <div class="sk-foto"><div class="sk-foto-img"></div><div class="sk-foto-body"><div class="sk-line s70"></div><div class="sk-line s40" style="margin-top:5px;"></div></div></div>
+      </div>
+      <div class="foto-grid" id="fotoGrid" style="display:none;"></div>
+      <div id="fotoStatus"></div>
+      <div class="section-footer">
+        <a href="galeri.html">
+          Lihat semua foto
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+    </section>
+
+    <!-- ARTIKEL TERBARU -->
+    <section class="section" id="articles">
+      <h2 class="section-title">Artikel Terbaru</h2>
+      <div class="card" id="articlesCard">
+        <!-- skeleton -->
+        <div id="artSkeleton" class="wspec-list">
+          <div class="sk-wspec"><div class="sk-thumb"></div><div class="sk-wtext"><div class="sk-wline s40"></div><div class="sk-wline"></div><div class="sk-wline s70"></div></div></div>
+          <div class="sk-wspec"><div class="sk-thumb"></div><div class="sk-wtext"><div class="sk-wline s40"></div><div class="sk-wline"></div><div class="sk-wline s70"></div></div></div>
+          <div class="sk-wspec"><div class="sk-thumb"></div><div class="sk-wtext"><div class="sk-wline s40"></div><div class="sk-wline"></div><div class="sk-wline s70"></div></div></div>
+        </div>
+        <div class="wspec-list" id="artList" style="display:none;"></div>
+        <div id="artStatus"></div>
+      </div>
+      <div class="section-footer">
+        <a href="artikel.html">
+          Lihat semua artikel
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+    </section>
+
     <!-- EDUCATION -->
     <section class="section" id="education">
       <h2 class="section-title">Pendidikan</h2>
@@ -474,6 +624,7 @@
     </svg>
   </button>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
     // Umur otomatis
     function calculateAge(birthDate) {
@@ -487,31 +638,118 @@
 
     const birthDate = new Date(2007, 6, 11);
     document.getElementById('ageText').textContent = calculateAge(birthDate) + " tahun";
-
-    // Tahun footer otomatis
     document.getElementById('yearNow').textContent = new Date().getFullYear();
 
     // Back to top
     const backToTop = document.getElementById('backToTop');
-    window.addEventListener('scroll', () => {
-      backToTop.classList.toggle('visible', window.scrollY > 300);
-    });
-    backToTop.addEventListener('click', () => {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
+    window.addEventListener('scroll', () => backToTop.classList.toggle('visible', window.scrollY > 300));
+    backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
     // Active nav link saat scroll
     const sections = document.querySelectorAll('section[id]');
     const navLinks = document.querySelectorAll('.nav-links a');
     window.addEventListener('scroll', () => {
       let current = '';
-      sections.forEach(s => {
-        if (window.scrollY >= s.offsetTop - 80) current = s.id;
-      });
-      navLinks.forEach(a => {
-        a.classList.toggle('active', a.getAttribute('href') === '#' + current);
-      });
+      sections.forEach(s => { if (window.scrollY >= s.offsetTop - 80) current = s.id; });
+      navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + current));
     });
+
+    // ── Artikel Terbaru ──
+    const SUPABASE_URL = "https://wcwbyqrxocjgykwonmoo.supabase.co";
+    const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indjd2J5cXJ4b2NqZ3lrd29ubW9vIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzEwOTIwNjAsImV4cCI6MjA4NjY2ODA2MH0.Pthqfu4N393tb0Mv6uuRUeHWevCU03gOHF1vwsPgWSk";
+    const sbClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    function timeAgo(iso) {
+      const diff = Math.floor((Date.now() - new Date(iso)) / 1000);
+      if (diff < 60) return 'Baru saja';
+      if (diff < 3600) return Math.floor(diff / 60) + ' menit yang lalu';
+      if (diff < 86400) return Math.floor(diff / 3600) + ' jam yang lalu';
+      if (diff < 2592000) return Math.floor(diff / 86400) + ' hari yang lalu';
+      return new Date(iso).toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' });
+    }
+
+    function escapeHtml(str = '') {
+      return str.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;');
+    }
+
+    async function loadLatestArtikel() {
+      const { data, error } = await sbClient
+        .from('articles')
+        .select('id, title, image_name, created_at')
+        .order('created_at', { ascending: false })
+        .limit(3);
+
+      document.getElementById('artSkeleton').style.display = 'none';
+
+      if (error || !data || !data.length) {
+        document.getElementById('artStatus').innerHTML =
+          `<div style="padding:20px;text-align:center;color:#94a3b8;font-size:0.9rem;">Belum ada artikel.</div>`;
+        return;
+      }
+
+      const list = document.getElementById('artList');
+      list.style.display = 'flex';
+
+      data.forEach(item => {
+        const imgUrl = item.image_name
+          ? `${SUPABASE_URL}/storage/v1/object/public/articles/${item.image_name}`
+          : 'https://placehold.co/200x140/1e293b/94a3b8?text=No+Image';
+
+        const a = document.createElement('a');
+        a.className = 'wSpec-wrap';
+        a.href = `baca-artikel.html?id=${item.id}`;
+        a.innerHTML = `
+          <div class="wSpec-img">
+            <img src="${imgUrl}" alt="${escapeHtml(item.title)}" loading="lazy" draggable="false">
+          </div>
+          <div class="wSpec-box">
+            <p class="wSpec-subtitle">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              <span>${timeAgo(item.created_at)}</span>
+            </p>
+            <h4 class="wSpec-title">${escapeHtml(item.title)}</h4>
+          </div>
+        `;
+        list.appendChild(a);
+      });
+    }
+
+    async function loadLatestFoto() {
+      const { data, error } = await sbClient
+        .from('gallery_images')
+        .select('id, title, file_name, uploaded_at')
+        .order('uploaded_at', { ascending: false })
+        .limit(2);
+
+      document.getElementById('fotoSkeleton').style.display = 'none';
+
+      if (error || !data || !data.length) {
+        document.getElementById('fotoStatus').innerHTML =
+          `<div style="padding:20px;text-align:center;color:#94a3b8;font-size:0.9rem;">Belum ada foto.</div>`;
+        return;
+      }
+
+      const grid = document.getElementById('fotoGrid');
+      grid.style.display = 'grid';
+
+      data.forEach(item => {
+        const imgUrl = `${SUPABASE_URL}/storage/v1/object/public/uploads/${item.file_name}`;
+        const a = document.createElement('a');
+        a.className = 'foto-card';
+        a.href = 'galeri.html';
+        a.innerHTML = `
+          <img src="${imgUrl}" alt="${escapeHtml(item.title)}" loading="lazy" draggable="false">
+          <div class="foto-card-overlay">
+            <p class="foto-card-title">${escapeHtml(item.title)}</p>
+            <div class="foto-card-date">${timeAgo(item.uploaded_at)}</div>
+          </div>
+        `;
+        grid.appendChild(a);
+      });
+    }
+
+    loadLatestArtikel();
+    loadLatestFoto();
   </script>
 </body>
 </html>

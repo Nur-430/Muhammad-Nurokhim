@@ -3,7 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Galeri - Nurokhim</title>
+  <title>Galeri — Muhammad Nurokhim</title>
+  <meta name="description" content="Galeri foto dan karya visual Muhammad Nurokhim — koleksi gambar digital dan dokumentasi karya pribadi." />
+  <meta property="og:title" content="Galeri — Muhammad Nurokhim" />
+  <meta property="og:description" content="Galeri foto dan karya visual Muhammad Nurokhim." />
+  <meta property="og:type" content="website" />
   <style>
     :root {
       --bg: #0b1220;
@@ -30,40 +34,64 @@
       min-height: 100vh;
     }
 
+    /* ── NAVBAR ── */
     nav {
       position: sticky;
       top: 0;
-      z-index: 30;
-      display: flex;
-      justify-content: center;
-      gap: 16px;
-      align-items: center;
-      padding: 16px 20px;
-      background: rgba(11, 18, 32, 0.78);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
-      flex-wrap: wrap;
+      z-index: 100;
+      backdrop-filter: blur(14px);
+      background: rgba(15, 23, 42, 0.82);
+      border-bottom: 1px solid rgba(59, 130, 246, 0.12);
     }
 
-    nav a {
+    .nav-wrap {
+      max-width: var(--maxw);
+      margin: 0 auto;
+      padding: 14px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .brand {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: #93c5fd;
+      letter-spacing: 0.3px;
+      white-space: nowrap;
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 4px;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .nav-links a {
       text-decoration: none;
       color: var(--muted);
       font-weight: 600;
-      padding: 10px 14px;
-      border-radius: 12px;
-      transition: .2s;
+      font-size: 0.9rem;
+      padding: 7px 13px;
+      border-radius: 10px;
+      transition: 0.2s;
     }
 
-    nav a:hover,
-    nav a.active {
-      color: #fff;
-      background: rgba(59,130,246,0.14);
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: #bfdbfe;
+      background: rgba(59,130,246,0.12);
     }
 
+    /* ── LAYOUT ── */
     .container {
       max-width: var(--maxw);
       margin: 0 auto;
-      padding: 30px 20px 60px;
+      padding: 30px 20px 80px;
     }
 
     .page-header {
@@ -78,6 +106,49 @@
       color: #fff;
     }
 
+    /* ── SKELETON LOADING ── */
+    .skeleton-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 18px;
+    }
+
+    .skeleton-card {
+      border-radius: var(--radius);
+      overflow: hidden;
+      background: rgba(17, 24, 39, 0.9);
+      border: 1px solid var(--border);
+    }
+
+    .skeleton-img {
+      width: 100%;
+      height: 240px;
+      background: linear-gradient(90deg, #1e293b 25%, #263347 50%, #1e293b 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+    }
+
+    .skeleton-text {
+      padding: 12px;
+    }
+
+    .skeleton-line {
+      height: 14px;
+      border-radius: 6px;
+      background: linear-gradient(90deg, #1e293b 25%, #263347 50%, #1e293b 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+      margin-bottom: 8px;
+    }
+
+    .skeleton-line.short { width: 55%; }
+
+    @keyframes shimmer {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    /* ── GALLERY ── */
     .gallery {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
@@ -127,11 +198,7 @@
       text-overflow: ellipsis;
     }
 
-    .card-date {
-      margin-top: 4px;
-      font-size: 12px;
-      color: #cbd5e1;
-    }
+    .card-date { margin-top: 4px; font-size: 12px; color: #cbd5e1; }
 
     .empty, .error {
       text-align: center;
@@ -143,6 +210,7 @@
 
     .error { color: #fca5a5; }
 
+    /* ── LIGHTBOX ── */
     .lightbox {
       position: fixed;
       inset: 0;
@@ -154,9 +222,7 @@
       padding: 16px;
     }
 
-    .lightbox.visible {
-      display: flex;
-    }
+    .lightbox.visible { display: flex; }
 
     .lb-content {
       width: min(98vw, 1500px);
@@ -209,7 +275,10 @@
       font-weight: 700;
       cursor: pointer;
       min-width: 110px;
+      transition: background 0.2s;
     }
+
+    .lb-btn:hover { background: rgba(59,130,246,0.28); }
 
     .lb-info {
       width: min(900px, 100%);
@@ -228,18 +297,9 @@
       color: #fff;
     }
 
-    .lb-desc {
-      margin: 0;
-      color: #cbd5e1;
-      line-height: 1.6;
-      white-space: pre-wrap;
-    }
+    .lb-desc { margin: 0; color: #cbd5e1; line-height: 1.6; white-space: pre-wrap; }
 
-    .lb-date {
-      margin-top: 10px;
-      font-size: 13px;
-      color: var(--muted);
-    }
+    .lb-date { margin-top: 10px; font-size: 13px; color: var(--muted); }
 
     .lb-close {
       position: absolute;
@@ -254,19 +314,58 @@
       font-weight: 700;
       cursor: pointer;
       z-index: 3;
+      transition: background 0.2s;
     }
+
+    .lb-close:hover { background: rgba(239,68,68,0.32); }
+
+    /* ── BACK TO TOP ── */
+    #backToTop {
+      position: fixed;
+      bottom: 28px;
+      right: 24px;
+      z-index: 200;
+      width: 46px;
+      height: 46px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #3b82f6, #2563eb);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 20px rgba(37,99,235,0.35);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    #backToTop.visible { opacity: 1; pointer-events: auto; }
+    #backToTop:hover { transform: translateY(-3px); }
 
     footer {
       text-align: center;
       padding: 28px 20px 40px;
       color: var(--muted);
     }
+
+    @media (max-width: 640px) {
+      .nav-wrap { flex-direction: column; align-items: center; }
+      .nav-links { gap: 2px; justify-content: center; }
+    }
   </style>
 </head>
 <body>
   <nav>
-    <a href="index.html">Home</a>
-    <a href="galeri.html" class="active">Galeri</a>
+    <div class="nav-wrap">
+      <a href="index.html" class="brand">Muhammad Nurokhim</a>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="artikel.html">Artikel</a>
+        <a href="galeri.html" class="active">Galeri</a>
+      </div>
+    </div>
   </nav>
 
   <main class="container">
@@ -274,13 +373,19 @@
       <h1>Galeri</h1>
     </header>
 
-    <section class="gallery" id="gallery"></section>
+    <!-- Skeleton loader -->
+    <div id="skeletonLoader" class="skeleton-grid">
+      <div class="skeleton-card"><div class="skeleton-img"></div><div class="skeleton-text"><div class="skeleton-line"></div><div class="skeleton-line short"></div></div></div>
+      <div class="skeleton-card"><div class="skeleton-img"></div><div class="skeleton-text"><div class="skeleton-line"></div><div class="skeleton-line short"></div></div></div>
+      <div class="skeleton-card"><div class="skeleton-img"></div><div class="skeleton-text"><div class="skeleton-line"></div><div class="skeleton-line short"></div></div></div>
+      <div class="skeleton-card"><div class="skeleton-img"></div><div class="skeleton-text"><div class="skeleton-line"></div><div class="skeleton-line short"></div></div></div>
+    </div>
+
+    <section class="gallery" id="gallery" style="display:none;"></section>
     <div id="statusBox"></div>
   </main>
 
-  <footer>
-    © 2026 Muhammad Nurokhim
-  </footer>
+  <footer id="pageFooter"></footer>
 
   <div class="lightbox" id="lightbox" aria-modal="true" role="dialog">
     <div class="lb-content">
@@ -303,23 +408,34 @@
     </div>
   </div>
 
+  <!-- BACK TO TOP -->
+  <button id="backToTop" aria-label="Kembali ke atas" title="Kembali ke atas">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M18 15l-6-6-6 6"/>
+    </svg>
+  </button>
+
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
+    // ── Tahun footer otomatis (Fix #4) ──
+    document.getElementById('pageFooter').textContent = `© ${new Date().getFullYear()} Muhammad Nurokhim`;
+
     const SUPABASE_URL = "https://wcwbyqrxocjgykwonmoo.supabase.co";
     const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indjd2J5cXJ4b2NqZ3lrd29ubW9vIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzEwOTIwNjAsImV4cCI6MjA4NjY2ODA2MH0.Pthqfu4N393tb0Mv6uuRUeHWevCU03gOHF1vwsPgWSk";
     const client = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    const gallery = document.getElementById("gallery");
-    const statusBox = document.getElementById("statusBox");
+    const gallery       = document.getElementById("gallery");
+    const statusBox     = document.getElementById("statusBox");
+    const skeletonLoader = document.getElementById("skeletonLoader");
 
     const lightbox = document.getElementById("lightbox");
-    const lbImage = document.getElementById("lbImage");
-    const lbTitle = document.getElementById("lbTitle");
-    const lbDesc = document.getElementById("lbDesc");
-    const lbDate = document.getElementById("lbDate");
-    const lbClose = document.getElementById("lbClose");
-    const prevBtn = document.getElementById("prevBtn");
-    const nextBtn = document.getElementById("nextBtn");
+    const lbImage  = document.getElementById("lbImage");
+    const lbTitle  = document.getElementById("lbTitle");
+    const lbDesc   = document.getElementById("lbDesc");
+    const lbDate   = document.getElementById("lbDate");
+    const lbClose  = document.getElementById("lbClose");
+    const prevBtn  = document.getElementById("prevBtn");
+    const nextBtn  = document.getElementById("nextBtn");
 
     let images = [];
     let currentIndex = 0;
@@ -327,20 +443,15 @@
     function formatDate(dateString) {
       const date = new Date(dateString);
       return date.toLocaleString("id-ID", {
-        day: "2-digit",
-        month: "long",
-        year: "numeric",
-        hour: "2-digit",
-        minute: "2-digit"
+        day: "2-digit", month: "long", year: "numeric",
+        hour: "2-digit", minute: "2-digit"
       });
     }
 
     function escapeHtml(str = "") {
       return str
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
+        .replaceAll("&", "&amp;").replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;").replaceAll('"', "&quot;")
         .replaceAll("'", "&#039;");
     }
 
@@ -348,13 +459,18 @@
       statusBox.innerHTML = "";
       gallery.innerHTML = "";
 
+      // ── Bug Fix #3: skeleton sudah tampil sejak halaman load ──
+
       const { data, error } = await client
         .from("gallery_images")
         .select("*")
         .order("uploaded_at", { ascending: false });
 
+      // Sembunyikan skeleton setelah data tiba
+      skeletonLoader.style.display = "none";
+
       if (error) {
-        statusBox.innerHTML = `<div class="error">Gagal memuat galeri: ${error.message}</div>`;
+        statusBox.innerHTML = `<div class="error">Gagal memuat galeri: ${escapeHtml(error.message)}</div>`;
         return;
       }
 
@@ -364,6 +480,8 @@
         statusBox.innerHTML = `<div class="empty">Belum ada gambar di galeri.</div>`;
         return;
       }
+
+      gallery.style.display = "grid";
 
       images.forEach((item, index) => {
         const imageUrl = `${SUPABASE_URL}/storage/v1/object/public/uploads/${item.file_name}`;
@@ -381,10 +499,7 @@
 
         card.addEventListener("click", () => openLightbox(index));
         card.addEventListener("keydown", (e) => {
-          if (e.key === "Enter" || e.key === " ") {
-            e.preventDefault();
-            openLightbox(index);
-          }
+          if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openLightbox(index); }
         });
 
         gallery.appendChild(card);
@@ -402,9 +517,7 @@
     function renderLightbox() {
       const item = images[currentIndex];
       if (!item) return;
-
       const imageUrl = `${SUPABASE_URL}/storage/v1/object/public/uploads/${item.file_name}`;
-
       lbImage.src = imageUrl;
       lbImage.alt = item.title || "Gambar";
       lbTitle.textContent = item.title || "Tanpa Judul";
@@ -434,21 +547,25 @@
     nextBtn.addEventListener("click", nextImage);
     prevBtn.addEventListener("click", prevImage);
 
-    lightbox.addEventListener("click", (e) => {
-      if (e.target === lightbox) closeLightbox();
-    });
+    lightbox.addEventListener("click", (e) => { if (e.target === lightbox) closeLightbox(); });
 
     document.addEventListener("keydown", (e) => {
       if (!lightbox.classList.contains("visible")) return;
-
       if (e.key === "Escape") closeLightbox();
       if (e.key === "ArrowRight") nextImage();
       if (e.key === "ArrowLeft") prevImage();
     });
 
     document.addEventListener("contextmenu", (e) => e.preventDefault());
-    document.addEventListener("dragstart", (e) => {
-      if (e.target.tagName === "IMG") e.preventDefault();
+    document.addEventListener("dragstart", (e) => { if (e.target.tagName === "IMG") e.preventDefault(); });
+
+    // ── Back to Top ──
+    const backToTop = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      backToTop.classList.toggle('visible', window.scrollY > 300);
+    });
+    backToTop.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     });
 
     loadGallery();

@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Artikel — Muhammad Nurokhim</title>
+  <meta name="description" content="Kumpulan artikel dan tulisan dari Muhammad Nurokhim." />
+  <style>
+    :root {
+      --bg: #0b1220;
+      --card: #111827;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --blue: #3b82f6;
+      --border: rgba(255,255,255,0.08);
+      --shadow: 0 12px 30px rgba(0,0,0,0.35);
+      --radius: 18px;
+      --maxw: 1200px;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background:
+        radial-gradient(circle at top right, rgba(59,130,246,0.15), transparent 25%),
+        radial-gradient(circle at bottom left, rgba(37,99,235,0.12), transparent 30%),
+        linear-gradient(180deg, #0b1220, #0f172a);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ── NAVBAR ── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      backdrop-filter: blur(14px);
+      background: rgba(15,23,42,0.82);
+      border-bottom: 1px solid rgba(59,130,246,0.12);
+    }
+    .nav-wrap {
+      max-width: var(--maxw); margin: 0 auto;
+      padding: 14px 20px;
+      display: flex; justify-content: space-between; align-items: center; gap: 16px;
+    }
+    .brand {
+      font-size: 1.05rem; font-weight: 800; color: #93c5fd;
+      letter-spacing: 0.3px; white-space: nowrap; text-decoration: none;
+    }
+    .nav-links { display: flex; gap: 4px; flex-wrap: wrap; align-items: center; justify-content: center; }
+    .nav-links a {
+      text-decoration: none; color: var(--muted); font-weight: 600;
+      font-size: 0.9rem; padding: 7px 13px; border-radius: 10px; transition: 0.2s;
+    }
+    .nav-links a:hover, .nav-links a.active {
+      color: #bfdbfe; background: rgba(59,130,246,0.12);
+    }
+
+    /* ── LAYOUT ── */
+    .container { max-width: var(--maxw); margin: 0 auto; padding: 30px 20px 80px; }
+    .page-header { margin-bottom: 28px; }
+    .page-header h1 { margin: 0 0 6px; font-size: clamp(26px,4vw,38px); font-weight: 800; color: #fff; }
+    .page-header p { margin: 0; color: var(--muted); font-size: 0.95rem; }
+
+    /* ── SPOTLIGHT GRID ── */
+    .spotlightWrap {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .spotlightItem {
+      background: rgba(17,24,39,0.92);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform .22s ease, border-color .22s ease, box-shadow .22s ease;
+    }
+    .spotlightItem:hover {
+      transform: translateY(-5px);
+      border-color: rgba(59,130,246,0.35);
+      box-shadow: 0 12px 28px rgba(0,0,0,0.35);
+    }
+    .spotlightItem a { text-decoration: none; color: inherit; display: block; }
+
+    .spotlightImg {
+      width: 100%; height: 175px; overflow: hidden; background: #1e293b;
+    }
+    .spotlightImg img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+      transition: transform .35s ease;
+      user-select: none; -webkit-user-drag: none; pointer-events: none;
+    }
+    .spotlightItem:hover .spotlightImg img { transform: scale(1.04); }
+
+    .spotlightBox { padding: 12px 14px 14px; }
+    .spotlightTitle {
+      margin: 0 0 8px; font-size: 0.92rem; font-weight: 700;
+      color: #f1f5f9; line-height: 1.45;
+      display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .spotlightChannel {
+      font-size: 0.78rem; color: var(--muted); font-weight: 600;
+      display: flex; align-items: center; gap: 5px;
+    }
+    .spotlightChannel svg { width: 12px; height: 12px; flex-shrink: 0; }
+
+    /* ── SKELETON ── */
+    .skeleton-spotlight {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+    }
+    .sk-item {
+      background: rgba(17,24,39,0.92); border: 1px solid var(--border);
+      border-radius: 14px; overflow: hidden;
+    }
+    .sk-img {
+      width: 100%; height: 175px;
+      background: linear-gradient(90deg, #1e293b 25%, #263347 50%, #1e293b 75%);
+      background-size: 200% 100%; animation: shimmer 1.5s infinite;
+    }
+    .sk-body { padding: 12px 14px; }
+    .sk-line {
+      height: 13px; border-radius: 6px; margin-bottom: 8px;
+      background: linear-gradient(90deg, #1e293b 25%, #263347 50%, #1e293b 75%);
+      background-size: 200% 100%; animation: shimmer 1.5s infinite;
+    }
+    .sk-line.short { width: 55%; }
+    .sk-line.xshort { width: 35%; }
+    @keyframes shimmer {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    /* ── EMPTY / ERROR ── */
+    .empty-state {
+      text-align: center; padding: 48px 20px;
+      background: rgba(17,24,39,0.9); border: 1px solid var(--border);
+      border-radius: 16px;
+    }
+    .empty-state .icon-big { font-size: 3rem; margin-bottom: 12px; }
+    .empty-state p { color: var(--muted); margin: 0; }
+    .error-state { color: #fca5a5; }
+
+    /* ── BACK TO TOP ── */
+    #backToTop {
+      position: fixed; bottom: 28px; right: 24px; z-index: 200;
+      width: 46px; height: 46px; border-radius: 14px;
+      background: linear-gradient(135deg, #3b82f6, #2563eb);
+      color: #fff; border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 8px 20px rgba(37,99,235,0.35);
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+    #backToTop.visible { opacity: 1; pointer-events: auto; }
+    #backToTop:hover { transform: translateY(-3px); }
+
+    footer { text-align: center; padding: 28px 20px 40px; color: var(--muted); }
+
+    @media (max-width: 900px) {
+      .spotlightWrap, .skeleton-spotlight { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 640px) {
+      .nav-wrap { flex-direction: column; align-items: center; }
+      .nav-links { gap: 2px; justify-content: center; }
+      .spotlightWrap, .skeleton-spotlight { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+      .spotlightImg { height: 120px; }
+      .sk-img { height: 120px; }
+      .spotlightTitle { font-size: 0.82rem; -webkit-line-clamp: 3; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="nav-wrap">
+      <a href="index.html" class="brand">Muhammad Nurokhim</a>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="artikel.html" class="active">Artikel</a>
+        <a href="galeri.html">Galeri</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="page-header">
+      <h1>Artikel</h1>
+      <p>Tulisan dan catatan dari Muhammad Nurokhim</p>
+    </div>
+
+    <!-- Skeleton -->
+    <div class="skeleton-spotlight" id="skeletonGrid">
+      <div class="sk-item"><div class="sk-img"></div><div class="sk-body"><div class="sk-line"></div><div class="sk-line"></div><div class="sk-line short"></div><div class="sk-line xshort" style="margin-top:10px;"></div></div></div>
+      <div class="sk-item"><div class="sk-img"></div><div class="sk-body"><div class="sk-line"></div><div class="sk-line"></div><div class="sk-line short"></div><div class="sk-line xshort" style="margin-top:10px;"></div></div></div>
+      <div class="sk-item"><div class="sk-img"></div><div class="sk-body"><div class="sk-line"></div><div class="sk-line"></div><div class="sk-line short"></div><div class="sk-line xshort" style="margin-top:10px;"></div></div></div>
+      <div class="sk-item"><div class="sk-img"></div><div class="sk-body"><div class="sk-line"></div><div class="sk-line"></div><div class="sk-line short"></div><div class="sk-line xshort" style="margin-top:10px;"></div></div></div>
+      <div class="sk-item"><div class="sk-img"></div><div class="sk-body"><div class="sk-line"></div><div class="sk-line"></div><div class="sk-line short"></div><div class="sk-line xshort" style="margin-top:10px;"></div></div></div>
+      <div class="sk-item"><div class="sk-img"></div><div class="sk-body"><div class="sk-line"></div><div class="sk-line"></div><div class="sk-line short"></div><div class="sk-line xshort" style="margin-top:10px;"></div></div></div>
+    </div>
+
+    <div class="spotlightWrap" id="artikelGrid" style="display:none;"></div>
+    <div id="statusBox"></div>
+  </main>
+
+  <footer id="pageFooter"></footer>
+
+  <button id="backToTop" aria-label="Kembali ke atas">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 15l-6-6-6 6"/></svg>
+  </button>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    document.getElementById('pageFooter').textContent = `© ${new Date().getFullYear()} Muhammad Nurokhim`;
+
+    const SUPABASE_URL = "https://wcwbyqrxocjgykwonmoo.supabase.co";
+    const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indjd2J5cXJ4b2NqZ3lrd29ubW9vIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzEwOTIwNjAsImV4cCI6MjA4NjY2ODA2MH0.Pthqfu4N393tb0Mv6uuRUeHWevCU03gOHF1vwsPgWSk";
+    const client = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    const artikelGrid  = document.getElementById('artikelGrid');
+    const skeletonGrid = document.getElementById('skeletonGrid');
+    const statusBox    = document.getElementById('statusBox');
+
+    function formatTanggal(iso) {
+      return new Date(iso).toLocaleDateString('id-ID', {
+        day: '2-digit', month: 'long', year: 'numeric',
+        hour: '2-digit', minute: '2-digit'
+      });
+    }
+
+    function escapeHtml(str = '') {
+      return str.replaceAll('&','&amp;').replaceAll('<','&lt;')
+                .replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'",'&#039;');
+    }
+
+    async function loadArtikel() {
+      const { data, error } = await client
+        .from('articles')
+        .select('id, title, image_name, caption, created_at')
+        .order('created_at', { ascending: false });
+
+      skeletonGrid.style.display = 'none';
+
+      if (error) {
+        statusBox.innerHTML = `<div class="empty-state error-state"><div class="icon-big">⚠️</div><p>Gagal memuat artikel: ${escapeHtml(error.message)}</p></div>`;
+        return;
+      }
+
+      if (!data || !data.length) {
+        statusBox.innerHTML = `<div class="empty-state"><div class="icon-big">📝</div><p>Belum ada artikel.</p></div>`;
+        return;
+      }
+
+      artikelGrid.style.display = 'grid';
+      data.forEach(item => {
+        const imgUrl = item.image_name
+          ? `${SUPABASE_URL}/storage/v1/object/public/articles/${item.image_name}`
+          : 'https://placehold.co/400x225/1e293b/94a3b8?text=No+Image';
+
+        const card = document.createElement('div');
+        card.className = 'spotlightItem';
+        card.innerHTML = `
+          <a href="baca-artikel.html?id=${item.id}">
+            <div class="spotlightImg">
+              <img src="${imgUrl}" alt="${escapeHtml(item.title)}" loading="lazy" draggable="false">
+            </div>
+            <div class="spotlightBox">
+              <h2 class="spotlightTitle">${escapeHtml(item.title)}</h2>
+              <div class="spotlightChannel">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                ${formatTanggal(item.created_at)}
+              </div>
+            </div>
+          </a>
+        `;
+        artikelGrid.appendChild(card);
+      });
+    }
+
+    // Back to top
+    const backToTop = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => backToTop.classList.toggle('visible', window.scrollY > 300));
+    backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+    // Blokir copy teks
+    document.addEventListener('copy', e => e.preventDefault());
+    document.addEventListener('selectstart', e => e.preventDefault());
+    document.addEventListener('contextmenu', e => e.preventDefault());
+
+    loadArtikel();
+  </script>
+</body>
+</html>

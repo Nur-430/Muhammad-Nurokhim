@@ -104,6 +104,7 @@
       gap: 4px;
       flex-wrap: wrap;
       align-items: center;
+      justify-content: center;
     }
 
     .nav-links a {
@@ -423,10 +424,92 @@
       transition: width 0.4s ease;
     }
 
+    /* ── RICH TEXT EDITOR ── */
+    .editor-toolbar {
+      display: flex; flex-wrap: wrap; gap: 4px;
+      padding: 10px 12px;
+      background: rgba(15,23,42,0.8);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 14px 14px 0 0;
+      border-bottom: none;
+    }
+    .tb-btn {
+      width: 34px; height: 34px; border: none; border-radius: 8px;
+      background: transparent; color: #cbd5e1;
+      cursor: pointer; font-size: 14px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.15s, color 0.15s;
+      flex-shrink: 0;
+    }
+    .tb-btn:hover { background: rgba(59,130,246,0.18); color: #fff; }
+    .tb-btn.active { background: rgba(59,130,246,0.25); color: #60a5fa; }
+    .tb-sep { width: 1px; height: 26px; background: rgba(255,255,255,0.1); margin: 0 2px; align-self: center; }
+    .tb-select {
+      height: 34px; border: none; border-radius: 8px;
+      background: rgba(255,255,255,0.06); color: #cbd5e1;
+      padding: 0 10px; font-size: 13px; cursor: pointer; outline: none;
+    }
+    .tb-select:hover { background: rgba(59,130,246,0.18); }
+
+    .editor-area {
+      min-height: 260px; outline: none;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 0 0 14px 14px;
+      padding: 16px;
+      background: rgba(255,255,255,0.02);
+      color: #e2e8f0; font-size: 15px; line-height: 1.75;
+      overflow-y: auto;
+    }
+    .editor-area:focus { border-color: rgba(59,130,246,0.45); }
+    .editor-area p { margin: 0 0 0.9em; }
+    .editor-area h1 { font-size: 1.7rem; font-weight: 800; margin: 1em 0 0.4em; color: #f8fafc; }
+    .editor-area h2 { font-size: 1.35rem; font-weight: 700; margin: 0.9em 0 0.4em; color: #f8fafc; }
+    .editor-area h3 { font-size: 1.1rem; font-weight: 700; margin: 0.8em 0 0.4em; color: #f8fafc; }
+    .editor-area blockquote { border-left: 4px solid #3b82f6; padding: 10px 16px; margin: 1em 0; background: rgba(59,130,246,0.07); border-radius: 0 8px 8px 0; color: #94a3b8; }
+    .editor-area ul, .editor-area ol { padding-left: 1.5em; margin: 0.8em 0; }
+    .editor-area li { margin-bottom: 0.3em; }
+    .editor-area a { color: #60a5fa; }
+
+    /* ── TABS ADMIN ── */
+    .admin-tabs {
+      display: flex; gap: 6px; margin-bottom: 24px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      padding-bottom: 0;
+    }
+    .tab-btn {
+      padding: 10px 18px; border: none; background: transparent;
+      color: var(--muted); font-weight: 700; font-size: 0.9rem;
+      cursor: pointer; border-radius: 12px 12px 0 0;
+      border-bottom: 3px solid transparent;
+      transition: 0.2s; margin-bottom: -1px;
+    }
+    .tab-btn:hover { color: #bfdbfe; }
+    .tab-btn.active { color: #60a5fa; border-bottom-color: #3b82f6; background: rgba(59,130,246,0.07); }
+
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* ── ARTIKEL MANAGE LIST ── */
+    .art-manage-list { display: grid; gap: 14px; }
+    .art-item {
+      display: flex; gap: 14px; align-items: flex-start;
+      background: rgba(31,41,55,0.9); border: 1px solid var(--border);
+      border-radius: 14px; overflow: hidden; padding: 0;
+    }
+    .art-item-img {
+      width: 110px; height: 78px; flex-shrink: 0; object-fit: cover;
+      display: block;
+    }
+    .art-item-body { flex: 1; min-width: 0; padding: 12px 14px 12px 0; }
+    .art-item-title { font-weight: 700; font-size: 0.95rem; color: #f8fafc; margin: 0 0 4px; }
+    .art-item-date { font-size: 12px; color: var(--muted); margin-bottom: 10px; }
+    .art-item-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
     @media (max-width: 640px) {
-      .nav-wrap { flex-direction: column; align-items: flex-start; }
-      .nav-right { gap: 2px; }
+      .nav-wrap { flex-direction: column; align-items: center; }
+      .nav-right { gap: 2px; justify-content: center; flex-wrap: wrap; }
       .preview-grid { grid-template-columns: 1fr; }
+      .art-item-img { width: 80px; height: 60px; }
     }
   </style>
 </head>
@@ -454,10 +537,17 @@
   </nav>
 
   <main class="container" id="app" style="visibility:hidden;">
-    <h1>Admin Galeri</h1>
+    <h1>Admin Panel</h1>
     <div class="admin-email" id="adminEmail"></div>
 
-    <section class="panel">
+    <!-- TABS -->
+    <div class="admin-tabs">
+      <button class="tab-btn active" data-tab="galeri">🖼️ Galeri</button>
+      <button class="tab-btn" data-tab="artikel">📝 Artikel</button>
+    </div>
+
+    <!-- ═══════════ TAB: GALERI ═══════════ -->
+    <div class="tab-panel active" id="tab-galeri">
       <h2>Upload Gambar</h2>
       <div class="grid">
         <div class="field">
@@ -534,6 +624,106 @@
       <div class="gallery-list" id="adminGallery" style="display:none;"></div>
       <div class="status" id="manageStatus"></div>
     </section>
+    </div><!-- end tab-galeri -->
+
+    <!-- ═══════════ TAB: ARTIKEL ═══════════ -->
+    <div class="tab-panel" id="tab-artikel">
+
+      <!-- Form Tulis Artikel -->
+      <section class="panel">
+        <h2>Tulis Artikel Baru</h2>
+        <div class="grid">
+          <div class="field" style="grid-column: 1 / -1;">
+            <label for="artTitle">Judul Artikel</label>
+            <input type="text" id="artTitle" placeholder="Masukkan judul artikel" />
+          </div>
+        </div>
+
+        <div class="grid" style="margin-top:16px;">
+          <div class="field">
+            <label for="artImageFile">Gambar / Ilustrasi</label>
+            <input type="file" id="artImageFile" accept="image/*" />
+          </div>
+          <div class="field">
+            <label for="artCaption">Keterangan Gambar (opsional)</label>
+            <input type="text" id="artCaption" placeholder="Deskripsi singkat gambar" />
+          </div>
+        </div>
+
+        <!-- Preview kompresi gambar artikel -->
+        <div class="compress-preview" id="artCompressPreview">
+          <h3>🖼️ Preview Kompresi Gambar Artikel</h3>
+          <div class="compress-quality">
+            <div class="quality-header">
+              <label for="artQualityRange">Kualitas Kompresi</label>
+              <span class="quality-value" id="artQualityDisplay">82%</span>
+            </div>
+            <input type="range" id="artQualityRange" min="50" max="95" value="82" step="1" />
+            <div class="quality-hints"><span>Lebih kecil</span><span>Lebih tajam</span></div>
+          </div>
+          <div class="preview-grid" style="margin-top:14px;">
+            <div class="preview-box">
+              <img id="artPreviewOriginal" src="" alt="Original" />
+              <div class="preview-label"><span>Original</span><span class="tag tag-original" id="artSizeOriginal">—</span></div>
+            </div>
+            <div class="preview-box">
+              <img id="artPreviewCompressed" src="" alt="Compressed" />
+              <div class="preview-label"><span>Terkompresi</span><span class="tag tag-compressed" id="artSizeCompressed">—</span></div>
+            </div>
+          </div>
+          <div class="compress-stats" id="artCompressStats"></div>
+        </div>
+
+        <!-- Rich Text Editor -->
+        <div class="field" style="margin-top:20px;">
+          <label>Isi Artikel</label>
+
+          <div class="editor-toolbar" id="editorToolbar">
+            <select class="tb-select" id="tbHeading" title="Heading">
+              <option value="p">Paragraf</option>
+              <option value="h1">Judul 1</option>
+              <option value="h2">Judul 2</option>
+              <option value="h3">Judul 3</option>
+            </select>
+            <div class="tb-sep"></div>
+            <button class="tb-btn" data-cmd="bold" title="Bold"><b>B</b></button>
+            <button class="tb-btn" data-cmd="italic" title="Italic"><i>I</i></button>
+            <button class="tb-btn" data-cmd="underline" title="Underline"><u>U</u></button>
+            <div class="tb-sep"></div>
+            <button class="tb-btn" data-cmd="insertUnorderedList" title="Bullet List">☰</button>
+            <button class="tb-btn" data-cmd="insertOrderedList" title="Numbered List">≡</button>
+            <div class="tb-sep"></div>
+            <button class="tb-btn" data-cmd="formatBlock" data-val="blockquote" title="Blockquote">"</button>
+            <div class="tb-sep"></div>
+            <button class="tb-btn" data-cmd="justifyLeft" title="Rata Kiri">⬅</button>
+            <button class="tb-btn" data-cmd="justifyCenter" title="Tengah">⬛</button>
+            <button class="tb-btn" data-cmd="justifyRight" title="Rata Kanan">➡</button>
+            <div class="tb-sep"></div>
+            <button class="tb-btn" data-cmd="removeFormat" title="Hapus Format">✕</button>
+          </div>
+          <div class="editor-area" id="richEditor" contenteditable="true" spellcheck="false"></div>
+        </div>
+
+        <div style="margin-top:16px; display:flex; gap:10px; flex-wrap:wrap;">
+          <button class="btn btn-primary" id="publishBtn">Publikasikan Artikel</button>
+          <button class="btn btn-secondary" id="clearArtBtn">Bersihkan Form</button>
+        </div>
+        <div class="upload-progress" id="artUploadProgress"><div class="upload-progress-bar" id="artUploadProgressBar"></div></div>
+        <div class="status" id="artPublishStatus"></div>
+      </section>
+
+      <!-- Manajemen Artikel -->
+      <section class="panel">
+        <h2>Manajemen Artikel</h2>
+        <div class="gallery-list" id="artManageSkeleton">
+          <div class="skeleton-item"><div class="skeleton-img-sm"></div><div class="skeleton-body"><div class="skeleton-line"></div><div class="skeleton-line short"></div></div></div>
+          <div class="skeleton-item"><div class="skeleton-img-sm"></div><div class="skeleton-body"><div class="skeleton-line"></div><div class="skeleton-line short"></div></div></div>
+        </div>
+        <div class="art-manage-list" id="artManageList" style="display:none;"></div>
+        <div class="status" id="artManageStatus"></div>
+      </section>
+    </div><!-- end tab-artikel -->
+
   </main>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -931,6 +1121,233 @@
 
     document.addEventListener("contextmenu", (e) => e.preventDefault());
     document.addEventListener("dragstart", (e) => { if (e.target.tagName === "IMG") e.preventDefault(); });
+
+    // ══════════════════════════════════════════
+    // ── TAB SWITCHING ──
+    // ══════════════════════════════════════════
+    document.querySelectorAll(".tab-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+        document.querySelectorAll(".tab-panel").forEach(p => p.classList.remove("active"));
+        btn.classList.add("active");
+        document.getElementById("tab-" + btn.dataset.tab).classList.add("active");
+        if (btn.dataset.tab === "artikel") loadArtManage();
+      });
+    });
+
+    // ══════════════════════════════════════════
+    // ── RICH TEXT EDITOR ──
+    // ══════════════════════════════════════════
+    const editor = document.getElementById("richEditor");
+    const tbHeading = document.getElementById("tbHeading");
+
+    document.querySelectorAll(".tb-btn[data-cmd]").forEach(btn => {
+      btn.addEventListener("mousedown", (e) => {
+        e.preventDefault();
+        const cmd = btn.dataset.cmd;
+        const val = btn.dataset.val || null;
+        document.execCommand(cmd, false, val);
+        editor.focus();
+      });
+    });
+
+    tbHeading.addEventListener("change", () => {
+      document.execCommand("formatBlock", false, tbHeading.value);
+      editor.focus();
+    });
+
+    // ══════════════════════════════════════════
+    // ── GAMBAR ARTIKEL + KOMPRESI ──
+    // ══════════════════════════════════════════
+    let artOriginalFile = null;
+
+    const artImageFile        = document.getElementById("artImageFile");
+    const artQualityRange     = document.getElementById("artQualityRange");
+    const artQualityDisplay   = document.getElementById("artQualityDisplay");
+    const artPreviewOriginal  = document.getElementById("artPreviewOriginal");
+    const artPreviewCompressed= document.getElementById("artPreviewCompressed");
+    const artSizeOriginal     = document.getElementById("artSizeOriginal");
+    const artSizeCompressed   = document.getElementById("artSizeCompressed");
+    const artCompressStats    = document.getElementById("artCompressStats");
+    const artCompressPreview  = document.getElementById("artCompressPreview");
+    const artUploadProgress   = document.getElementById("artUploadProgress");
+    const artUploadProgressBar= document.getElementById("artUploadProgressBar");
+
+    async function updateArtPreview() {
+      if (!artOriginalFile) return;
+      const quality    = parseInt(artQualityRange.value);
+      const compressed = await compressImage(artOriginalFile, quality);
+      artPreviewOriginal.src   = URL.createObjectURL(artOriginalFile);
+      artPreviewCompressed.src = URL.createObjectURL(compressed);
+      artSizeOriginal.textContent   = formatBytes(artOriginalFile.size);
+      artSizeCompressed.textContent = formatBytes(compressed.size);
+      const saved = artOriginalFile.size - compressed.size;
+      const pct   = ((saved / artOriginalFile.size) * 100).toFixed(1);
+      artCompressStats.innerHTML = saved > 0
+        ? `Hemat <span class="saved">-${formatBytes(saved)} (${pct}%)</span> dibanding original`
+        : `Ukuran bertambah — coba turunkan kualitas`;
+      artCompressPreview.classList.add("visible");
+    }
+
+    artImageFile.addEventListener("change", () => {
+      const f = artImageFile.files[0];
+      if (!f) return;
+      artOriginalFile = f;
+      updateArtPreview();
+    });
+
+    artQualityRange.addEventListener("input", () => {
+      artQualityDisplay.textContent = artQualityRange.value + "%";
+      updateArtPreview();
+    });
+
+    // ══════════════════════════════════════════
+    // ── PUBLISH ARTIKEL ──
+    // ══════════════════════════════════════════
+    function setArtStatus(msg, type = "") {
+      const el = document.getElementById("artPublishStatus");
+      el.textContent = msg;
+      el.className = "status " + type;
+    }
+
+    function makeArtFileName(title) {
+      const safeBase = (title || "artikel")
+        .toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+      return `${Date.now()}-${safeBase}.jpg`;
+    }
+
+    document.getElementById("publishBtn").addEventListener("click", async () => {
+      const title   = document.getElementById("artTitle").value.trim();
+      const caption = document.getElementById("artCaption").value.trim();
+      const content = editor.innerHTML.trim();
+
+      if (!title)   { setArtStatus("Judul artikel wajib diisi.", "error"); return; }
+      if (!content || content === "<br>") { setArtStatus("Isi artikel tidak boleh kosong.", "error"); return; }
+
+      document.getElementById("publishBtn").disabled = true;
+      setArtStatus("Memproses...");
+      artUploadProgress.classList.add("visible");
+      artUploadProgressBar.style.width = "20%";
+
+      let imageName = null;
+
+      if (artOriginalFile) {
+        const quality    = parseInt(artQualityRange.value);
+        const compressed = await compressImage(artOriginalFile, quality);
+        imageName = makeArtFileName(title);
+
+        const { error: storageErr } = await client.storage
+          .from("articles")
+          .upload(imageName, compressed, { cacheControl: "3600", upsert: false, contentType: "image/jpeg" });
+
+        if (storageErr) {
+          setArtStatus("Upload gambar gagal: " + storageErr.message, "error");
+          document.getElementById("publishBtn").disabled = false;
+          artUploadProgress.classList.remove("visible");
+          artUploadProgressBar.style.width = "0%";
+          return;
+        }
+      }
+
+      artUploadProgressBar.style.width = "70%";
+
+      const { error: dbErr } = await client.from("articles").insert([{
+        title, caption: caption || null, image_name: imageName, content
+      }]);
+
+      artUploadProgressBar.style.width = "100%";
+
+      if (dbErr) {
+        setArtStatus("Gagal simpan artikel: " + dbErr.message, "error");
+        document.getElementById("publishBtn").disabled = false;
+        setTimeout(() => { artUploadProgress.classList.remove("visible"); artUploadProgressBar.style.width = "0%"; }, 600);
+        return;
+      }
+
+      setArtStatus("✅ Artikel berhasil dipublikasikan!", "success");
+      document.getElementById("artTitle").value = "";
+      document.getElementById("artCaption").value = "";
+      artImageFile.value = "";
+      editor.innerHTML = "";
+      artOriginalFile = null;
+      artCompressPreview.classList.remove("visible");
+      document.getElementById("publishBtn").disabled = false;
+      setTimeout(() => { artUploadProgress.classList.remove("visible"); artUploadProgressBar.style.width = "0%"; }, 800);
+      loadArtManage();
+    });
+
+    document.getElementById("clearArtBtn").addEventListener("click", () => {
+      if (!confirm("Bersihkan semua isian form artikel?")) return;
+      document.getElementById("artTitle").value = "";
+      document.getElementById("artCaption").value = "";
+      artImageFile.value = "";
+      editor.innerHTML = "";
+      artOriginalFile = null;
+      artCompressPreview.classList.remove("visible");
+      setArtStatus("");
+    });
+
+    // ══════════════════════════════════════════
+    // ── MANAJEMEN ARTIKEL ──
+    // ══════════════════════════════════════════
+    async function loadArtManage() {
+      const skeleton = document.getElementById("artManageSkeleton");
+      const list     = document.getElementById("artManageList");
+      const status   = document.getElementById("artManageStatus");
+
+      list.style.display = "none";
+      skeleton.style.display = "grid";
+      status.textContent = "";
+
+      const { data, error } = await client
+        .from("articles").select("id, title, image_name, created_at")
+        .order("created_at", { ascending: false });
+
+      skeleton.style.display = "none";
+      list.style.display = "grid";
+      list.innerHTML = "";
+
+      if (error) { status.textContent = "Gagal memuat: " + error.message; status.className = "status error"; return; }
+      if (!data || !data.length) { status.textContent = "Belum ada artikel."; status.className = "status"; return; }
+
+      data.forEach(item => {
+        const imgUrl = item.image_name
+          ? `${SUPABASE_URL}/storage/v1/object/public/articles/${item.image_name}`
+          : "https://placehold.co/220x140/1e293b/94a3b8?text=No+Image";
+
+        const el = document.createElement("div");
+        el.className = "art-item";
+        el.innerHTML = `
+          <img class="art-item-img" src="${imgUrl}" alt="${escapeHtml(item.title)}" loading="lazy" draggable="false">
+          <div class="art-item-body">
+            <div class="art-item-title">${escapeHtml(item.title)}</div>
+            <div class="art-item-date">${formatDate(item.created_at)}</div>
+            <div class="art-item-actions">
+              <a href="baca-artikel.html?id=${item.id}" target="_blank" class="btn btn-secondary" style="font-size:13px;padding:8px 12px;">Lihat</a>
+              <button class="btn btn-danger" style="font-size:13px;padding:8px 12px;" data-artdel="${item.id}" data-artfile="${escapeHtml(item.image_name || '')}">Hapus</button>
+            </div>
+          </div>
+        `;
+        list.appendChild(el);
+      });
+
+      // Bind hapus
+      list.querySelectorAll("[data-artdel]").forEach(btn => {
+        btn.addEventListener("click", async () => {
+          if (!confirm("Yakin ingin menghapus artikel ini?")) return;
+          btn.disabled = true;
+          const id  = btn.dataset.artdel;
+          const img = btn.dataset.artfile;
+
+          if (img) {
+            await client.storage.from("articles").remove([img]);
+          }
+          const { error } = await client.from("articles").delete().eq("id", id);
+          if (error) { alert("Gagal hapus: " + error.message); btn.disabled = false; return; }
+          loadArtManage();
+        });
+      });
+    }
 
     (async function init() {
       const ok = await requireAdmin();
